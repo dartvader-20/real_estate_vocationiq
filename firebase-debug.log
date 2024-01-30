@@ -88,3 +88,22 @@ You're about to initialize a Firebase project in this directory:
 [info] will contain Hosting assets to be uploaded with firebase deploy. If you
 [info] have a build process for your assets, use your build's output directory.
 [info] 
+[debug] [2024-01-30T13:06:09.279Z] ----------------------------------------------------------------------
+[debug] [2024-01-30T13:06:09.281Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\VADER\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js hosting:disable
+[debug] [2024-01-30T13:06:09.281Z] CLI Version:   13.0.2
+[debug] [2024-01-30T13:06:09.281Z] Platform:      win32
+[debug] [2024-01-30T13:06:09.282Z] Node Version:  v18.16.0
+[debug] [2024-01-30T13:06:09.282Z] Time:          Tue Jan 30 2024 18:36:09 GMT+0530 (India Standard Time)
+[debug] [2024-01-30T13:06:09.282Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-01-30T13:06:09.288Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-01-30T13:06:09.289Z] > authorizing via signed-in user (chandanmohan50@gmail.com)
+[debug] [2024-01-30T13:06:09.289Z] [iam] checking project vocationaliq for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-01-30T13:06:09.291Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/vocationaliq:testIamPermissions [none]
+[debug] [2024-01-30T13:06:09.291Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/vocationaliq:testIamPermissions x-goog-quota-user=projects/vocationaliq
+[debug] [2024-01-30T13:06:09.291Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/vocationaliq:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-01-30T13:06:10.875Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/vocationaliq:testIamPermissions 200
+[debug] [2024-01-30T13:06:10.875Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/vocationaliq:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-01-30T13:06:10.876Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/vocationaliq [none]
+[debug] [2024-01-30T13:06:11.549Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/vocationaliq 200
+[debug] [2024-01-30T13:06:11.549Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/vocationaliq {"projectId":"vocationaliq","projectNumber":"250048777908","displayName":"VocationIQ","name":"projects/vocationaliq","resources":{"hostingSite":"vocationaliq","realtimeDatabaseInstance":"vocationaliq-default-rtdb"},"state":"ACTIVE","etag":"1_1167b86a-3ffd-4d39-965d-959e7d54c904"}
