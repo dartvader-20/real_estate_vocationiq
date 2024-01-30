@@ -25,6 +25,11 @@ const FirstHalf = styled('div')({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    '@media (max-width: 768px)': {
+        width: '50%',
+        borderRight: 'none',
+        borderBottom: '2.5px solid #D8D0D0',
+    },
 });
 const ContentHalf = styled('div')({
     flex: 1,
@@ -33,6 +38,9 @@ const ContentHalf = styled('div')({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    '@media (max-width: 768px)': {
+        width: '100%',
+    },
 });
 
 let dates = []

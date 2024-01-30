@@ -25,6 +25,9 @@ const GenerateButton = styled('button')({
         backgroundColor: '#2C3A84',
         color: 'white',
     },
+    '@media (max-width: 768px)': {
+        padding: 8
+    },
 });
 
 const GenerateButton2 = styled('button')({
@@ -50,10 +53,14 @@ const GenerateButton2 = styled('button')({
         backgroundColor: '#2C3A84',
         color: 'white',
     },
+    '@media (max-width: 768px)': {
+        padding: 8
+    },
 });
 
 const NavBar = ({ activePage, user }) => {
     const navigate = useNavigate();
+    const isMobile = window.innerWidth <= 768;
     const [isButtonClicked, setIsButtonClicked] = React.useState(0);
     const handleButtonClick = (index) => {
         if (index === 4) {
@@ -78,7 +85,7 @@ const NavBar = ({ activePage, user }) => {
                         fontFamily: 'Poppins, sans-serif',
                         padding: '10px',
                         fontWeight: 600,
-                        fontSize: '40px',
+                        fontSize: isMobile ? '20px' : '40px',
                     }} >
                         Vocation<span style={{ color: 'red' }}>IQ</span>
                     </Typography>
@@ -92,7 +99,7 @@ const NavBar = ({ activePage, user }) => {
                         <Typography style={{
                             marginLeft: '5px', fontFamily: 'Poppins, sans-serif',
                             fontWeight: 600,
-                            fontSize: '20px',
+                            fontSize: isMobile ? '12px' : '20px',
                         }}>
                             {button.text}
                         </Typography>
@@ -108,7 +115,7 @@ const NavBar = ({ activePage, user }) => {
                     <Typography style={{
                         marginLeft: '5px', fontFamily: 'Poppins, sans-serif',
                         fontWeight: 600,
-                        fontSize: '20px',
+                        fontSize: isMobile ? '12px' : '20px',
                     }}>
                         Logout
                     </Typography>

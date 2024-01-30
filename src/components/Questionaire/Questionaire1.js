@@ -19,7 +19,10 @@ const UserDet = styled('div')({
     flexDirection: 'column',
     alignItems: 'center',
     padding: '20px',
-    width: '70vw'
+    width: '70vw',
+    '@media (max-width: 768px)': {
+        padding: '10px',
+    },
 });
 const GenerateButton = styled('button')({
     backgroundColor: '#2c3a84',
@@ -32,6 +35,10 @@ const GenerateButton = styled('button')({
     '&:hover': {
         background: 'black',
         color: 'white',
+    },
+    '@media (max-width: 768px)': {
+        width: 'auto',
+        fontSize: '12px',
     },
 });
 
@@ -48,6 +55,7 @@ const skills = [
 ];
 
 const Questionaire1 = ({ data = {}, setData, handlePrevious, handleNextClick, validationError, questions }) => {
+    const isMobile = window.innerWidth <= 768;
     const handleRatingChange = (question, value) => {
         setData((prevRatings) => ({
             ...prevRatings,
@@ -78,17 +86,17 @@ const Questionaire1 = ({ data = {}, setData, handlePrevious, handleNextClick, va
                 <Typography style={{
                     fontFamily: 'Poppins, sans-serif',
                     fontWeight: 600,
-                    fontSize: '20px'
+                    fontSize: isMobile ? '14px' : '20px',
                 }}>
                     Which of the following do you strongly agree or disagree with? Choose 5 if you strongly agree and 1 if you strongly disagree.
                 </Typography>
             </div>
             <UserDet>
                 {questions.map((question, index) => (
-                    <Box key={index} mb={2} sx={{ width: '50vw', border: "1px solid black", padding: 2, borderRadius: "16px" }}>
+                    <Box key={index} mb={2} sx={{ width: isMobile ? "80vw" : '50vw', border: "1px solid black", padding: 2, borderRadius: "16px" }}>
                         <Typography style={{
                             fontFamily: 'Poppins, sans-serif',
-                            fontSize: '16px',
+                            fontSize: isMobile ? '12px' : '16px',
                             fontWeight: 600,
                         }}>
                             {index + 1}. {question}

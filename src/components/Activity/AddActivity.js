@@ -18,7 +18,11 @@ const UserDet = styled('div')({
     padding: '20px',
     border: '1px solid #D8D0D0',
     borderRadius: '12px',
-    width: '70vw'
+    width: '70vw',
+    '@media (max-width: 768px)': {
+        width: '100%',
+        padding: '5px',
+    },
 });
 const GenerateButton = styled('button')({
     backgroundColor: '#2c3a84',
@@ -32,14 +36,18 @@ const GenerateButton = styled('button')({
         background: 'black',
         color: 'white',
     },
+    '@media (max-width: 768px)': {
+        width: 'auto',
+        fontSize: '12px',
+    },
 });
 
 let activitiesDATA = 0;
 let activityLevel, activityEnjoy, activityOutcome;
 
-const AddActivity = ({ data, setData, handlePrevious, handleNextClick }) => {
+const AddActivity = ({ data, setData, handlePrevious, handleNextClick, validationError }) => {
     const [showDialog, setShowDialog] = React.useState(false);
-
+    const isMobile = window.innerWidth <= 768;
     const handleAddButtonClick = () => {
         setShowDialog(true);
     };
@@ -67,10 +75,10 @@ const AddActivity = ({ data, setData, handlePrevious, handleNextClick }) => {
     return (
         <MainContainer>
             <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
-                <Typography variant="h6" color='black' style={{
+                <Typography color='black' style={{
                     fontFamily: 'Poppins, sans-serif',
                     fontWeight: 600,
-                    fontSize: '20px'
+                    fontSize: isMobile ? '13px' : '20px',
                 }}>
                     Extra Curricular Activities, Projects, and other Interests
                 </Typography>
@@ -78,7 +86,7 @@ const AddActivity = ({ data, setData, handlePrevious, handleNextClick }) => {
             <UserDet>
                 {data.length === 0 && (<div>
                     <Typography style={{
-                        fontSize: '14px', fontFamily: 'Poppins, sans-serif',
+                        fontSize: isMobile ? '10px' : '14px', fontFamily: 'Poppins, sans-serif',
                         fontWeight: 500,
                     }}
                         color='black'>Experiences gained through extracurricular activities play a pivotal role in shaping your personal and professional growth,
@@ -88,13 +96,13 @@ const AddActivity = ({ data, setData, handlePrevious, handleNextClick }) => {
                     </p>
                     <Typography
                         style={{
-                            fontSize: '14px', fontFamily: 'Poppins, sans-serif',
+                            fontSize: isMobile ? '10px' : '14px', fontFamily: 'Poppins, sans-serif',
                             fontWeight: 500,
                         }}>
                         Please include all extracurricular activities in which you have participated, encompassing clubs, sports, artistic pursuits,
                         volunteering, or any other forms of engagement beyond your academic studies.
                     </Typography>
-                    <div style={{ height: '350px', display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+                    <div style={{ height: isMobile ? "250px" : '350px', display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
                         <img src={image3URL} alt='activityLogo' style={{ height: '80%' }} />
                     </div>
                 </div>)
@@ -102,7 +110,7 @@ const AddActivity = ({ data, setData, handlePrevious, handleNextClick }) => {
                 {data.length > 0 && (
                     <TableActivityComponent data={data} onDelete={handleActivityDelete} />
                 )}
-                <GenerateButton onClick={handleAddButtonClick} style={{ marginTop: '10px' }}>
+                <GenerateButton onClick={handleAddButtonClick} style={{ marginTop: isMobile ? 5 : '10px' }}>
                     Add Activity
                 </GenerateButton>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
@@ -111,6 +119,7 @@ const AddActivity = ({ data, setData, handlePrevious, handleNextClick }) => {
                     >
                         Previous
                     </GenerateButton>
+                    {validationError && <p style={{ color: 'red', marginTop: '10px', textAlign: 'center' }}>{validationError}</p>}
                     <GenerateButton
                         onClick={handleNextClick}
                     >
@@ -121,7 +130,7 @@ const AddActivity = ({ data, setData, handlePrevious, handleNextClick }) => {
                     style: {
                         minWidth: '58%', position: 'absolute',
                         top: '45%',
-                        left: '58%',
+                        left: isMobile ? '50%' : '58%',
                         transform: 'translate(-50%, -50%)',
                         display: 'flex',
                         alignItems: 'center',

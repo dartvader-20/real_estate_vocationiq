@@ -20,18 +20,24 @@ const GenerateButton = styled('button')({
         background: 'black',
         color: 'white',
     },
+    '@media (max-width: 768px)': {
+        width: 'auto',
+        textAlign: 'center',
+        fontSize: '12px',
+        marginTop: 5
+    },
 });
 
 const DashboardWelcome = () => {
     const navigate = useNavigate();
-
+    const isMobile = window.innerWidth <= 768;
     return (
-        <div style={{ width: '75vw', height: '100vh', }}>
+        <div style={{ width: '75vw', height: '100vh', overflowX: isMobile ? 'auto' : 'none' }}>
             <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', marginTop: '10px', padding: 10 }}>
                 <Typography style={{
                     fontFamily: 'Poppins, sans-serif',
                     fontWeight: 500,
-                    fontSize: '20px',
+                    fontSize: isMobile ? '12px' : '20px',
                     marginTop: 10
                 }}>
                     Your journey of self discovery begins here
@@ -54,7 +60,7 @@ const DashboardWelcome = () => {
                     <Typography style={{
                         fontFamily: 'Poppins, sans-serif',
                         fontWeight: 600,
-                        fontSize: '16px',
+                        fontSize: isMobile ? '12px' : '16px',
                         color: '#2C3A84',
                         padding: '10px'
                     }}>
@@ -62,13 +68,13 @@ const DashboardWelcome = () => {
                     </Typography>
                     <GenerateButton onClick={() => { navigate("/userdetails"); }}>Start Assessment</GenerateButton>
                 </div>
-                <img src={image2URL} alt='dashboard' style={{ width: '25%', height: '150%' }} />
+                <img src={image2URL} alt='dashboard' style={{ width: '25%', height: isMobile ? '50%' : '150%' }} />
             </Box>
             <Typography style={{
                 fontFamily: 'Poppins, sans-serif',
                 fontWeight: 550,
-                fontSize: '14px',
-                marginTop: '40px',
+                fontSize: isMobile ? 10 : '14px',
+                marginTop: isMobile ? '20px' : '40px',
             }}>
                 Hi there!<br />
                 <br />

@@ -20,12 +20,18 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 const MainContainer = styled('div')({
     height: "100vh",
     display: 'flex',
+    '@media (max-width: 768px)': {
+        flexDirection: 'column',
+    },
 });
-const ImageHalf = styled('div')({
+const ImageHalf = styled('image')({
     flex: 1,
     background: `url(${imageUrl})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    '@media (max-width: 768px)': {
+        height: '40vh !important',
+    },
 });
 const ContentHalf = styled('div')({
     flex: 1,
@@ -51,6 +57,11 @@ const GenerateButton = styled('button')({
         background: 'black',
         color: 'white'
     },
+    '@media (max-width: 768px)': {
+        width: '100%',
+        fontSize: "12px",
+        borderRadius: '0px',
+    },
 });
 const GeneratePaleButton = styled('button')({
     marginTop: '15px',
@@ -63,11 +74,17 @@ const GeneratePaleButton = styled('button')({
     fontWeight: 500,
     borderRadius: '10px',
     fontSize: '16px',
+    '@media (max-width: 768px)': {
+        fontSize: "12px",
+        width: '100%',
+        borderRadius: '0px',
+    },
 });
 
 let emailavatar;
 
 const HomePage = () => {
+    const isMobile = window.innerWidth <= 768;
     const navigate = useNavigate();
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -130,14 +147,16 @@ const HomePage = () => {
             <ImageHalf>
             </ImageHalf>
             <ContentHalf>
-                <Typography variant="h4" component="h2"
+                <Typography
                     style={{
-                        fontFamily: 'Poppins, sans-serif', fontSize: '40px',
-                        padding: '20px', fontWeight: 'bold'
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: isMobile ? '20px' : '40px',
+                        padding: isMobile ? 5 : '20px',
+                        fontWeight: 'bold'
                     }}>
                     Vocation<span style={{ color: 'red' }}>IQ</span>
                 </Typography>
-                <Typography variant='h5' style={{ textDecoration: 'underline', textDecorationColor: 'GrayText', fontFamily: 'Poppins, sans-serif' }}>LogIn</Typography>
+                <Typography style={{ textDecoration: 'underline', textDecorationColor: 'GrayText', fontFamily: 'Poppins, sans-serif' }}>LogIn</Typography>
                 {errorSama && <Typography variant="danger">{errorSama}</Typography>}
                 <FormControl sx={{ m: 1, }} variant="standard">
                     <InputLabel htmlFor="input-with-icon-adornment">
@@ -149,7 +168,7 @@ const HomePage = () => {
                         size='medium'
                         label="Email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: 300 }}
                         startAdornment={
-                            <EmailIcon position="start" style={{ padding: '5px' }}>
+                            <EmailIcon position="start" style={{ padding: isMobile ? 0 : '5px' }}>
                                 <AccountCircle />
                             </EmailIcon>
                         }
@@ -177,9 +196,9 @@ const HomePage = () => {
                         }}
                     />
                 </FormControl>
-                <div style={{ display: 'flex', flexDirection: 'row', paddingTop: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'row', paddingTop: isMobile ? "5px" : '10px' }}>
                     <TextField type='checkbox' value={agree} onChange={handleCheckBox} />
-                    <Typography style={{ paddingLeft: '9px', fontFamily: 'Poppins, sans-serif', fontSize: '16px' }}> I accept the <span onClick={() => navigate('/privacypolicy')}
+                    <Typography style={{ paddingLeft: '9px', fontFamily: 'Poppins, sans-serif', fontSize: isMobile ? '12px' : '16px', }}> I accept the <span onClick={() => navigate('/privacypolicy')}
                         style={{ cursor: 'pointer', textDecoration: 'underline', color: 'inherit', }}>Privacy Policy</span> and the<br /><span onClick={() => navigate('/termsofservice')}
                             style={{ cursor: 'pointer', textDecoration: 'underline', color: 'inherit', }} > Terms of Service</span></Typography>
                 </div>

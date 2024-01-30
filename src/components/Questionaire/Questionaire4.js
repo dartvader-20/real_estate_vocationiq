@@ -12,11 +12,26 @@ import { useNavigate, } from "react-router-dom";
 import { getUserDetails } from '../HomePage/userManagement';
 import NavBar from '../Navbar/NavBar';
 import EmailAvatar from '../HomePage/EmailAvatar';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const MainContainer = styled('div')({
     height: "100vh",
     display: 'flex',
 });
+
+const MobileNavButton = styled(IconButton)({
+    display: 'none',
+    '@media (max-width: 768px)': {
+        display: 'block',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+    },
+});
+
 const Half2 = styled('div')({
     width: '20%',
     backgroundSize: 'cover',
@@ -27,6 +42,11 @@ const Half2 = styled('div')({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    '@media (max-width: 768px)': {
+        width: '40%',
+        borderRight: '2.5px solid #D8D0D0',
+        borderBottom: '2.5px solid #D8D0D0',
+    },
 });
 const ContentHalf = styled('div')({
     flex: 1,
@@ -50,6 +70,10 @@ const GenerateButton2 = styled('button')({
     '&:hover': {
         background: 'black',
         color: 'white',
+    },
+    '@media (max-width: 768px)': {
+        width: 'auto',
+        fontSize: '12px',
     },
 });
 
@@ -124,40 +148,42 @@ const questionnaireData = [
         ],
         type: 'radio',
     },
-    {
-        question: "Work Atmosphere and Expectations: When considering a potential employer, what matters most to you?",
-        options: [
-            "Salary and benefits",
-            "Collaborative work culture",
-            "Opportunities for skill development",
-            "Location and city of placement",
-        ],
-        type: 'radio',
-    },
-    {
-        question: "How do you prioritize work-life balance in a professional setting?",
-        options: [
-            "It's crucial for overall well-being",
-            "It's secondary to career advancement",
-            "It's not a major concern",
-            "It depends on project deadlines"
-        ],
-        type: 'radio',
-    },
-    {
-        question: "What salary range do you expect for an entry-level position in architecture/design?",
-        options: [
-            "Below industry standard",
-            "Industry standard",
-            "Above industry standard",
-            "Not sure/No preference"
-        ],
-        type: 'radio',
-    },
+    // {
+    //     question: "Work Atmosphere and Expectations: When considering a potential employer, what matters most to you?",
+    //     options: [
+    //         "Salary and benefits",
+    //         "Collaborative work culture",
+    //         "Opportunities for skill development",
+    //         "Location and city of placement",
+    //     ],
+    //     type: 'radio',
+    // },
+    // {
+    //     question: "How do you prioritize work-life balance in a professional setting?",
+    //     options: [
+    //         "It's crucial for overall well-being",
+    //         "It's secondary to career advancement",
+    //         "It's not a major concern",
+    //         "It depends on project deadlines"
+    //     ],
+    //     type: 'radio',
+    // },
+    // {
+    //     question: "What salary range do you expect for an entry-level position in architecture/design?",
+    //     options: [
+    //         "Below industry standard",
+    //         "Industry standard",
+    //         "Above industry standard",
+    //         "Not sure/No preference"
+    //     ],
+    //     type: 'radio',
+    // },
 ];
 
 const Questionaire4 = () => {
     const navigate = useNavigate();
+    const isMobile = window.innerWidth <= 768;
+    const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState(Array(questionnaireData.length).fill(''));
     const routePaths = [
@@ -207,7 +233,7 @@ const Questionaire4 = () => {
             <Typography color='black'
                 style={{
                     fontFamily: 'Poppins, sans-serif',
-                    fontSize: '20px',
+                    fontSize: isMobile ? '12px' : '20px',
                     fontWeight: 600,
                     marginLeft: '8px'
                 }}>
@@ -228,14 +254,22 @@ const Questionaire4 = () => {
                                     value={index}
                                 />
                             }
-                            label={option}
+                            label={<Typography
+                                style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
+                            >
+                                {option}
+                            </Typography>}
                         />
                     ) : (
                         <FormControlLabel
                             key={index}
                             value={option}
                             control={<Radio />}
-                            label={option}
+                            label={<Typography
+                                style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
+                            >
+                                {option}
+                            </Typography>}
                             onChange={(event) => handleRadioChange(event, questionIndex)}
                         />
                     )
@@ -246,16 +280,27 @@ const Questionaire4 = () => {
 
     return (
         <MainContainer>
-            <Half2>
-                <NavBar activePage={activePageIndex} user={getUserDetails} />
-            </Half2>
+            {isMobile && (
+                <MobileNavButton onClick={() => setIsMobileNavOpen(true)}>
+                    <MenuIcon />
+                </MobileNavButton>
+            )}
+            {isMobile ? (
+                <Drawer anchor="left" open={isMobileNavOpen} onClose={() => setIsMobileNavOpen(false)}>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </Drawer>
+            ) : (
+                <Half2>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </Half2>
+            )}
             <ContentHalf>
                 <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', width: '92%' }}>
                     <Typography
                         color='black'
                         style={{
                             fontFamily: 'Poppins, sans-serif',
-                            fontSize: '20px',
+                            fontSize: isMobile ? '12px' : '20px',
                             fontWeight: 600,
                             marginTop: '7%',
                             marginLeft: '8px'

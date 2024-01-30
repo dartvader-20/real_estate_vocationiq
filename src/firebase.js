@@ -3,14 +3,14 @@ import { getAuth } from "firebase/auth";
 import { getDatabase } from 'firebase/database'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyB4gsdqYtSKPZmAdQ3o7NEhAl9OX8fqlTk",
-    authDomain: "vocationaliq.firebaseapp.com",
-    databaseURL: "https://vocationaliq-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "vocationaliq",
-    storageBucket: "vocationaliq.appspot.com",
-    messagingSenderId: "250048777908",
-    appId: "1:250048777908:web:452ccb9222bfd0a244d1e1",
-    measurementId: "G-ZF28FR8X0Z"
+    apiKey: "AIzaSyBTZN_CZbEem0M4LiUj16SnQRHmpXQtu_o",
+    authDomain: "vocationiq-quboyd.firebaseapp.com",
+    databaseURL: "https://vocationiq-quboyd-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "vocationiq-quboyd",
+    storageBucket: "vocationiq-quboyd.appspot.com",
+    messagingSenderId: "1481377163",
+    appId: "1:1481377163:web:aa2390c0913a4b25399b8e",
+    measurementId: "G-12GSESRH0Z"
 };
 
 const app = initializeApp(firebaseConfig);

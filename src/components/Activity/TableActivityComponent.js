@@ -35,9 +35,12 @@ const enjoymentLabels = {
 };
 
 const TableActivityComponent = ({ data, onDelete }) => {
+    const isMobile = window.innerWidth <= 768;
     return (
         <div>
-            <TableContainer component={Paper} style={{ borderRadius: "12px", marginTop: '20px', fontFamily: 'Poppins, sans-serif' }}>
+            <TableContainer component={Paper} style={{
+                borderRadius: "12px", marginTop: '20px', fontFamily: 'Poppins, sans-serif'
+            }}>
                 <Table>
                     <TableHead style={{ background: '#2c3a84' }}>
                         <TableRow>
@@ -46,7 +49,7 @@ const TableActivityComponent = ({ data, onDelete }) => {
                                     color: 'white',
                                     fontFamily: 'Poppins, sans-serif',
                                     fontWeight: 500,
-                                    fontSize: '15px',
+                                    fontSize: isMobile ? '10px' : '15px',
                                     border: '1px solid white'
                                 }}
                             >
@@ -57,7 +60,7 @@ const TableActivityComponent = ({ data, onDelete }) => {
                                     color: 'white',
                                     fontFamily: 'Poppins, sans-serif',
                                     fontWeight: 500,
-                                    fontSize: '15px',
+                                    fontSize: isMobile ? '10px' : '15px',
                                     border: '1px solid white'
                                 }}
                             >
@@ -68,7 +71,7 @@ const TableActivityComponent = ({ data, onDelete }) => {
                                     color: 'white',
                                     fontFamily: 'Poppins, sans-serif',
                                     fontWeight: 500,
-                                    fontSize: '15px',
+                                    fontSize: isMobile ? '10px' : '15px',
                                     border: '1px solid white'
                                 }}
                             >
@@ -79,7 +82,7 @@ const TableActivityComponent = ({ data, onDelete }) => {
                                     color: 'white',
                                     fontFamily: 'Poppins, sans-serif',
                                     fontWeight: 500,
-                                    fontSize: '15px',
+                                    fontSize: isMobile ? '10px' : '15px',
                                     border: '1px solid white'
                                 }}
                             >
@@ -90,7 +93,7 @@ const TableActivityComponent = ({ data, onDelete }) => {
                                     color: 'white',
                                     fontFamily: 'Poppins, sans-serif',
                                     fontWeight: 500,
-                                    fontSize: '15px',
+                                    fontSize: isMobile ? '10px' : '15px',
                                     border: '1px solid white'
                                 }}
                             >
@@ -101,7 +104,7 @@ const TableActivityComponent = ({ data, onDelete }) => {
                                     color: 'white',
                                     fontFamily: 'Poppins, sans-serif',
                                     fontWeight: 500,
-                                    fontSize: '15px',
+                                    fontSize: isMobile ? '10px' : '15px',
                                     border: '1px solid white'
                                 }}
                             >
@@ -112,7 +115,7 @@ const TableActivityComponent = ({ data, onDelete }) => {
                     <TableBody>
                         {data.map((activity, index) => (
                             <TableRow key={index} style={{ background: '#2C3A841A', fontFamily: 'Poppins, sans-serif' }}>
-                                <TableCell style={{ border: '1px solid white' }}>{activity.activity}</TableCell>
+                                <TableCell style={{ border: '1px solid white', maxWidth: isMobile ? "100%" : "100%" }}>{activity.activity}</TableCell>
                                 <TableCell style={{ border: '1px solid white' }}>{highestLevelLabels[activity.highestLevel]}</TableCell>
                                 <TableCell style={{ border: '1px solid white' }}>{outcomeLabels[activity.outcome]}</TableCell>
                                 <TableCell style={{ border: '1px solid white' }}>{activity.activityType}</TableCell>

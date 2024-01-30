@@ -7,10 +7,23 @@ import { getUserDetails } from '../HomePage/userManagement';
 import EmailAvatar from '../HomePage/EmailAvatar';
 import { isBArch, targetJobs, requiredSkillsForTargetJobs } from '../UserDetails/UserDetails';
 import { percentage } from './Questionaire1';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const MainContainer = styled('div')({
     height: "100vh",
     display: 'flex',
+});
+const MobileNavButton = styled(IconButton)({
+    display: 'none',
+    '@media (max-width: 768px)': {
+        display: 'block',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+    },
 });
 const Half2 = styled('div')({
     width: '20%',
@@ -22,6 +35,11 @@ const Half2 = styled('div')({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    '@media (max-width: 768px)': {
+        width: '40%',
+        borderRight: '2.5px solid #D8D0D0',
+        borderBottom: '2.5px solid #D8D0D0',
+    },
 });
 const ContentHalf = styled('div')({
     flex: 1,
@@ -44,6 +62,10 @@ const GenerateButton2 = styled('button')({
     '&:hover': {
         background: 'black',
         color: 'white',
+    },
+    '@media (max-width: 768px)': {
+        width: 'auto',
+        fontSize: '12px',
     },
 });
 
@@ -124,6 +146,8 @@ let matchPercentages = {};
 const Questionaire2 = () => {
     const navigate = useNavigate();
     const [selectedRespon, setSelectedRespon] = React.useState([]);
+    const isMobile = window.innerWidth <= 768;
+    const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
     const [responsesBinary, setResponsesBinary] = useState(Array(respon.length).fill(0));
     useEffect(() => {
         setResponsesBinary(selectedRespon.reduce((acc, label) => {
@@ -198,16 +222,27 @@ const Questionaire2 = () => {
 
     return (
         <MainContainer>
-            <Half2>
-                <NavBar activePage={activePageIndex} user={getUserDetails} />
-            </Half2>
+            {isMobile && (
+                <MobileNavButton onClick={() => setIsMobileNavOpen(true)}>
+                    <MenuIcon />
+                </MobileNavButton>
+            )}
+            {isMobile ? (
+                <Drawer anchor="left" open={isMobileNavOpen} onClose={() => setIsMobileNavOpen(false)}>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </Drawer>
+            ) : (
+                <Half2>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </Half2>
+            )}
             <ContentHalf>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '92%' }}>
                     <Typography
                         color="black"
                         style={{
                             fontFamily: 'Poppins, sans-serif',
-                            fontSize: '20px',
+                            fontSize: isMobile ? '12px' : '20px',
                             fontWeight: 600,
                             marginTop: '7%',
                             marginLeft: '8px',
@@ -217,7 +252,7 @@ const Questionaire2 = () => {
                     </Typography>
                     <EmailAvatar />
                 </div>
-                <div style={{ padding: '15px', width: '90%', color: 'black', border: '2px solid #D8D0D0', borderRadius: '12px', height: '40%' }}>
+                <div style={{ padding: isMobile ? 10 : '15px', width: '90%', color: 'black', border: '2px solid #D8D0D0', borderRadius: '12px', height: isMobile ? "75vh" : '40%' }}>
                     {respon.slice(startIndex, endIndex).map((label, index) => (
                         <Box sx={{ border: '1px solid white', height: '20%' }} key={label}>
                             <FormControlLabel
@@ -225,7 +260,7 @@ const Questionaire2 = () => {
                                 style={{ fontFamily: 'Poppins, sans-serif' }}
                                 control={
                                     <Checkbox
-                                        sx={{ '& .MuiSvgIcon-root': { fontSize: 35 } }}
+                                        sx={{ '& .MuiSvgIcon-root': { fontSize: isMobile ? '18px' : '35px', } }}
                                         onClick={() => handleButtonClick(label, index + startIndex)}
                                         checked={isButtonActive(label)}
                                     />

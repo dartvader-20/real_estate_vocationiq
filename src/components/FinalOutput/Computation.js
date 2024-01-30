@@ -21,12 +21,25 @@ import { auth, db } from "../../firebase";
 import { get, set, ref } from 'firebase/database';
 import { targetJobs } from "../UserDetails/UserDetails";
 import { sumArrayWithSkills } from "../Questionaire/Questionaire1";
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 let time;
 
 const MainContainer = styled('div')({
     height: "100vh",
     display: 'flex',
+});
+const MobileNavButton = styled(IconButton)({
+    display: 'none',
+    '@media (max-width: 768px)': {
+        display: 'block',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+    },
 });
 const Half2 = styled('div')({
     width: '20%',
@@ -38,6 +51,11 @@ const Half2 = styled('div')({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    '@media (max-width: 768px)': {
+        width: '40%',
+        borderRight: '2.5px solid #D8D0D0',
+        borderBottom: '2.5px solid #D8D0D0',
+    },
 });
 const ContentHalf = styled('div')({
     flex: 1,
@@ -62,6 +80,10 @@ const GenerateButton2 = styled('button')({
         background: 'black',
         color: 'white',
     },
+    '@media (max-width: 768px)': {
+        width: 'auto',
+        fontSize: '12px',
+    },
 });
 
 const coursesMap = {
@@ -79,7 +101,7 @@ const coursesMap = {
     "Site engineer": "Building Information Modeling, Building Estimation BBS Combo (Buildings), Construction Management, Tendering, Surveying & GIS, Civil 3D, RCC Manual, Vastu Consultancy",
     "Civil quantity surveyor": "Property Valuation Advanced, Property Valuation Basic, Building Estimation BBS Combo (Buildings), QS estimation & Billing, Construction Management, Tendering, Surveying & GIS, Civil 3D, RCC Manual, Vastu Consultancy",
     "Site foreman": "Construction Management, Tendering, Civil 3D, RCC Manual, Vastu Consultancy",
-    "React native developer": "", // Courses not provided
+    "React native developer": "JavaScript and ES6, React and Redux,React Native Fundamentals, Navigation in React Native, API Integration",
     "Piping / plumbing designer": "Building Estimation BBS Combo (Buildings), Construction Management, Tendering, Surveying & GIS, Civil 3D, Vastu Consultancy",
     "Electrical designer": "AC Design Level, HVAC Drafting",
     "Safety officer": "Tendering, Surveying & GIS, Civil 3D, RCC Manual, Vastu Consultancy",
@@ -222,6 +244,8 @@ const GeneratePdf = async (data) => {
 
 const Computation = () => {
     const [sortedMatchData, setSortedMatchData] = React.useState([]);
+    const isMobile = window.innerWidth <= 768;
+    const [isMobileNavOpen, setIsMobileNavOpen] = React.useState(false);
     useEffect(() => {
         // Sorting matchPercentages
         const sortedMatchData = Object.entries(matchPercentages)
@@ -251,28 +275,39 @@ const Computation = () => {
         }, {});
     return (
         <MainContainer>
-            <Half2>
-                <NavBar activePage={activePageIndex} user={getUserDetails} />
-            </Half2>
+            {isMobile && (
+                <MobileNavButton onClick={() => setIsMobileNavOpen(true)}>
+                    <MenuIcon />
+                </MobileNavButton>
+            )}
+            {isMobile ? (
+                <Drawer anchor="left" open={isMobileNavOpen} onClose={() => setIsMobileNavOpen(false)}>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </Drawer>
+            ) : (
+                <Half2>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </Half2>
+            )}
             <ContentHalf>
                 <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', width: '92%' }}>
                     <Typography
                         color='black'
                         style={{
                             fontFamily: 'Poppins, sans-serif',
-                            fontSize: '20px',
+                            fontSize: isMobile ? '12px' : '20px',
                             fontWeight: 600,
                             marginTop: '7%',
-                            marginLeft: '8px'
+                            marginLeft: isMobile ? 0 : '8px'
                         }}
                     >
                         Congratulations! You have completed the assessment
                     </Typography>
                     <EmailAvatar />
                 </div>
-                <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', width: '92%', flexDirection: 'column' }}>
+                <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', width: isMobile ? '80%' : '92%', flexDirection: 'column' }}>
                     <Box sx={{ border: '2px solid black', borderRadius: '16px', padding: 5 }}>
-                        <TableContainer component={Paper} style={{ borderRadius: "12px", marginTop: '20px', fontFamily: 'Poppins, sans-serif' }}>
+                        <TableContainer component={Paper} style={{ borderRadius: "12px", marginTop: isMobile ? "5px" : '20px', fontFamily: 'Poppins, sans-serif' }}>
                             <Table>
                                 <TableHead style={{ background: '#2c3a84' }}>
                                     <TableRow>
@@ -280,21 +315,21 @@ const Computation = () => {
                                             color: 'white',
                                             fontFamily: 'Poppins, sans-serif',
                                             fontWeight: 500,
-                                            fontSize: '15px',
+                                            fontSize: isMobile ? '12px' : '15px',
                                             border: '1px solid white'
                                         }}>Target Job</TableCell>
                                         <TableCell style={{
                                             color: 'white',
                                             fontFamily: 'Poppins, sans-serif',
                                             fontWeight: 500,
-                                            fontSize: '15px',
+                                            fontSize: isMobile ? '12px' : '15px',
                                             border: '1px solid white'
                                         }}>Courses</TableCell>
                                         <TableCell style={{
                                             color: 'white',
                                             fontFamily: 'Poppins, sans-serif',
                                             fontWeight: 500,
-                                            fontSize: '15px',
+                                            fontSize: isMobile ? '12px' : '15px',
                                             border: '1px solid white'
                                         }}>Percentage</TableCell>
                                     </TableRow>
@@ -302,9 +337,9 @@ const Computation = () => {
                                 <TableBody>
                                     {Object.entries(sortedMatchPercentages).map(([targetJob, percentage]) => (
                                         <TableRow key={targetJob} style={{ background: '#2C3A841A', fontFamily: 'Poppins, sans-serif' }}>
-                                            <TableCell style={{ border: '1px solid white' }}>{targetJob}</TableCell>
-                                            <TableCell style={{ border: '1px solid white' }}>{coursesMap[targetJob]}</TableCell>
-                                            <TableCell style={{ border: '1px solid white' }}>{percentage.toFixed(2)}%</TableCell>
+                                            <TableCell style={{ border: '1px solid white', fontSize: isMobile ? '12px' : '15px', }}>{targetJob}</TableCell>
+                                            <TableCell style={{ border: '1px solid white', fontSize: isMobile ? '10px' : '15px', }}>{coursesMap[targetJob]}</TableCell>
+                                            <TableCell style={{ border: '1px solid white', fontSize: isMobile ? '12px' : '15px', }}>{percentage.toFixed(2)}%</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

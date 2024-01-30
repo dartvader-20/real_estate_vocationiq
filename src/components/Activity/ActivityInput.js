@@ -19,6 +19,10 @@ const DialogContent = styled('div')({
     maxWidth: '100vw',
     overflow: 'auto',
     overflowX: 'hidden',
+    '@media (max-width: 768px)': {
+        width: '80%',
+        padding: '5px',
+    },
 });
 
 const GenerateButton = styled('button')({
@@ -34,9 +38,13 @@ const GenerateButton = styled('button')({
         background: 'black',
         color: 'white',
     },
+    '@media (max-width: 768px)': {
+        fontSize: '10px',
+    },
 });
 
 const ActivityInput = ({ onSave, onCancel }) => {
+    const isMobile = window.innerWidth <= 768;
     const [activity, setActivity] = React.useState('');
     const [highestLevel, setHighestLevel] = React.useState('');
     const [outcome, setOutcome] = React.useState('');
@@ -163,17 +171,17 @@ const ActivityInput = ({ onSave, onCancel }) => {
                         fontSize: '16px'
                     }}>Was this activity enjoyable for you? <span style={{ color: 'red' }}>*
                         </span></Typography>
-                    <div style={{ border: '1px solid black', padding: '15px', borderRadius: '12px', width: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ border: '1px solid black', padding: isMobile ? '13px' : '15px', borderRadius: '12px', width: isMobile ? '92' : '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <IconButton
                             aria-label="Yes"
                             onClick={() => handleEnjoymentChange(1)}
                             color={enjoyment === 1 ? 'primary' : 'default'}
                         >
-                            <InsertEmoticonIcon fontSize='large' />
+                            <InsertEmoticonIcon fontSize={isMobile ? 'medium' : 'large'} />
                             <Typography style={{
                                 fontFamily: 'Poppins, sans-serif',
                                 fontWeight: 500,
-                                fontSize: '16px'
+                                fontSize: isMobile ? '11px' : '16px',
                             }}>Positive</Typography>
                         </IconButton>
                         <IconButton
@@ -181,11 +189,11 @@ const ActivityInput = ({ onSave, onCancel }) => {
                             onClick={() => handleEnjoymentChange(0.5)}
                             color={enjoyment === 0.5 ? 'primary' : 'default'}
                         >
-                            <SentimentNeutralRoundedIcon fontSize='large' />
+                            <SentimentNeutralRoundedIcon fontSize={isMobile ? 'medium' : 'large'} />
                             <Typography style={{
                                 fontFamily: 'Poppins, sans-serif',
                                 fontWeight: 500,
-                                fontSize: '16px'
+                                fontSize: isMobile ? '11px' : '16px',
                             }}>Neutral</Typography>
                         </IconButton>
                         <IconButton
@@ -193,11 +201,11 @@ const ActivityInput = ({ onSave, onCancel }) => {
                             onClick={() => handleEnjoymentChange(0.1)}
                             color={enjoyment === 0.1 ? 'primary' : 'default'}
                         >
-                            <SentimentVeryDissatisfiedIcon fontSize='large' />
+                            <SentimentVeryDissatisfiedIcon fontSize={isMobile ? 'medium' : 'large'} />
                             <Typography style={{
                                 fontFamily: 'Poppins, sans-serif',
                                 fontWeight: 500,
-                                fontSize: '16px'
+                                fontSize: isMobile ? '11px' : '16px',
                             }}>Negative</Typography>
                         </IconButton>
                     </div>

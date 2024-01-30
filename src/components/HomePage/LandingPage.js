@@ -7,12 +7,26 @@ import { Typography, Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import image6URL from '../images/image6';
 import EmailAvatar from './EmailAvatar';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const MainContainer = styled('div')({
     height: "100vh",
     display: 'flex',
     flexDirection: 'row',
 });
+const MobileNavButton = styled(IconButton)({
+    display: 'none',
+    '@media (max-width: 768px)': {
+        display: 'block',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+    },
+});
+
 const FirstHalf = styled('div')({
     width: '20%',
     backgroundSize: 'cover',
@@ -23,6 +37,11 @@ const FirstHalf = styled('div')({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    '@media (max-width: 768px)': {
+        width: '40%',
+        borderRight: '2.5px solid #D8D0D0',
+        borderBottom: '2.5px solid #D8D0D0',
+    },
 });
 const ContentHalf = styled('div')({
     flex: 1,
@@ -46,11 +65,17 @@ const GenerateButton = styled('button')({
         background: 'black',
         color: 'white',
     },
+    '@media (max-width: 768px)': {
+        width: 'auto',
+        fontSize: '12px',
+    },
 });
 
 const LandingPage = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
+    const isMobile = window.innerWidth <= 768;
+    const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
     const routePaths = [
         '/dashboard',
         '/userdetails',
@@ -75,18 +100,29 @@ const LandingPage = () => {
     return (
         <MainContainer>
             {isLoading && <FullPageLoader />}
-            <FirstHalf >
-                <NavBar activePage={activePageIndex} user={getUserDetails} />
-            </FirstHalf>
+            {isMobile && (
+                <MobileNavButton onClick={() => setIsMobileNavOpen(true)}>
+                    <MenuIcon />
+                </MobileNavButton>
+            )}
+            {isMobile ? (
+                <Drawer anchor="left" open={isMobileNavOpen} onClose={() => setIsMobileNavOpen(false)}>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </Drawer>
+            ) : (
+                <FirstHalf>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </FirstHalf>
+            )}
             <ContentHalf>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexDirection: 'row-reverse', padding: '10px', width: '90%' }}>
                     <EmailAvatar />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'flex-start', width: '91%' }}>
-                    <Typography variant="h6" color='black' style={{
+                    <Typography color='black' style={{
                         fontFamily: 'Poppins, sans-serif',
                         fontWeight: 600,
-                        fontSize: '20px'
+                        fontSize: isMobile ? '12px' : '20px',
                     }}>
                         Self-Evaluation
                     </Typography>
@@ -101,7 +137,7 @@ const LandingPage = () => {
                     width: '90%',
                 }} >
                     <Typography style={{
-                        fontSize: '14px',
+                        fontSize: isMobile ? '12px' : '14px',
                         fontFamily: 'Poppins, sans-serif',
                         fontWeight: 500,
                     }}

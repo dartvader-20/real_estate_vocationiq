@@ -11,6 +11,9 @@ import { getUserData, getUserDetails } from '../HomePage/userManagement';
 import AddActivity from '../Activity/AddActivity';
 import EmailAvatar from '../HomePage/EmailAvatar';
 import Questionaire1 from '../Questionaire/Questionaire1';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const MainContainer = styled('div')({
     height: "100vh",
@@ -27,6 +30,11 @@ const FirstHalf = styled('div')({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    '@media (max-width: 768px)': {
+        width: '40%',
+        borderRight: '2.5px solid #D8D0D0',
+        borderBottom: '2.5px solid #D8D0D0',
+    },
 });
 const ContentHalf = styled('div')({
     flex: 1,
@@ -38,9 +46,20 @@ const ContentHalf = styled('div')({
     overflowY: 'auto',
 });
 
+const MobileNavButton = styled(IconButton)({
+    display: 'none',
+    '@media (max-width: 768px)': {
+        display: 'block',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+    },
+});
+
 let isBArch = false;
 const questions = [
-    'I am good at verbal and written communication with clients, team members and others.',
+    'I am good at verbal and written communication with professors, teachers and friends',
     'I convey the information clearly and concisely.',
     'I build and maintain positive relationships with teachers, professors and guide.',
     'I have the ability to work well with people from diverse backgrounds.',
@@ -88,6 +107,7 @@ let targetJobs = []
 
 const UserDetails = () => {
     const navigate = useNavigate();
+    const isMobile = window.innerWidth <= 768;
     const [activeTab, setActiveTab] = React.useState(0);
     const location = useLocation();
     const currentRoute = location.pathname;
@@ -106,6 +126,7 @@ const UserDetails = () => {
     const [activityData, setActivityData] = React.useState([]);
     const [ratings, setRatings] = useState({});
     const [validationError, setValidationError] = React.useState(null);
+    const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
     // const handleTabChange = (event, newValue) => {
     //     setActiveTab(newValue);
@@ -148,19 +169,12 @@ const UserDetails = () => {
                     const snapshot2 = await get(activityDetailsRef);
                     const activityDetailsFromDb = snapshot2.val();
 
-                    const questionaire1Ref = ref(db, `users/${userUid}/questionaire1`);
-                    const snapshot3 = await get(questionaire1Ref);
-                    const questionaire1FromDb = snapshot3.val();
-
 
                     if (studentDetailsFromDb) {
                         setStudentDetailsData(studentDetailsFromDb);
                     }
                     if (activityDetailsFromDb) {
                         setActivityData(activityDetailsFromDb)
-                    }
-                    if (questionaire1FromDb) {
-                        setActivityData(questionaire1FromDb)
                     }
                 } catch (error) {
                     console.error('Error fetching student details from the database:', error);
@@ -224,6 +238,7 @@ const UserDetails = () => {
                     const activityDetailsRef = ref(db, `users/${userUid}/activityDetails`);
                     await set(studentDetailsRef, studentDetailsData);
                     await set(activityDetailsRef, activityData);
+
                     navigate('/landingpage');
                 } catch (error) {
                     console.error('Error writing student details to the database:', error);
@@ -285,9 +300,20 @@ const UserDetails = () => {
     return (
         <MainContainer>
             {isLoading && <FullPageLoader />}
-            <FirstHalf >
-                <NavBar activePage={activePageIndex} user={getUserDetails} />
-            </FirstHalf>
+            {isMobile && (
+                <MobileNavButton onClick={() => setIsMobileNavOpen(true)}>
+                    <MenuIcon />
+                </MobileNavButton>
+            )}
+            {isMobile ? (
+                <Drawer anchor="left" open={isMobileNavOpen} onClose={() => setIsMobileNavOpen(false)}>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </Drawer>
+            ) : (
+                <FirstHalf>
+                    <NavBar activePage={activePageIndex} user={getUserDetails} />
+                </FirstHalf>
+            )}
             <ContentHalf>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexDirection: 'row-reverse', padding: '10px', width: '90%' }}>
                     <EmailAvatar />

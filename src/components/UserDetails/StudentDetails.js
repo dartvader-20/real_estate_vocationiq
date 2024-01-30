@@ -20,6 +20,10 @@ const UserDet = styled('div')({
     width: '80%',
     border: '2px solid #D8D0D0',
     borderRadius: '12px',
+    '@media (max-width: 768px)': {
+        width: '72%',
+        padding: '5px',
+    },
 });
 const GenerateButton = styled('button')({
     backgroundColor: '#2c3a84',
@@ -33,6 +37,10 @@ const GenerateButton = styled('button')({
     '&:hover': {
         background: 'black',
         color: 'white',
+    },
+    '@media (max-width: 768px)': {
+        width: 'auto',
+        fontSize: '12px',
     },
 });
 
@@ -65,7 +73,7 @@ const targetJobOptions = [
 
 
 const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, setSelectedTargetJobs, validationError }) => {
-
+    const isMobile = window.innerWidth <= 768;
     const handleNameChange = (event) => {
         setData((prevData) => ({ ...prevData, name: event.target.value }));
     };
@@ -117,11 +125,11 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
 
     return (
         <MainContainer>
-            <div style={{ display: 'flex', alignItems: 'flex-start', width: '81%' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', width: isMobile ? "72%" : '81%' }}>
                 <Typography color='black' style={{
                     fontFamily: 'Poppins, sans-serif',
                     fontWeight: 600,
-                    fontSize: '20px'
+                    fontSize: isMobile ? '12px' : '20px',
                 }}>
                     About you
                 </Typography>
@@ -132,7 +140,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                         <Typography color='black' align='left' style={{
                             fontFamily: 'Poppins, sans-serif',
                             fontWeight: 500,
-                            fontSize: '14px'
+                            fontSize: isMobile ? 12 : '14px'
                         }}>Full Name<span style={{ color: 'red', marginLeft: '4px' }}>*
                             </span>
                         </Typography>
@@ -151,7 +159,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                             style={{
                                 fontFamily: 'Poppins, sans-serif',
                                 fontWeight: 500,
-                                fontSize: '14px'
+                                fontSize: isMobile ? 12 : '14px'
                             }}>Email Address<span style={{ color: 'red', marginLeft: '4px' }}>*</span>
                         </Typography>
                         <TextField
@@ -170,7 +178,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                             style={{
                                 fontFamily: 'Poppins, sans-serif',
                                 fontWeight: 500,
-                                fontSize: '14px'
+                                fontSize: isMobile ? 12 : '14px'
                             }}>Location <span style={{ color: 'red', marginLeft: '4px' }}>*</span>
                         </Typography>
                         <TextField
@@ -187,7 +195,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                         <Typography color='black' align='left' style={{
                             fontFamily: 'Poppins, sans-serif',
                             fontWeight: 500,
-                            fontSize: '14px'
+                            fontSize: isMobile ? 12 : '14px'
                         }}>Phone Number<span style={{ color: 'red', marginLeft: '4px' }}>*</span>
                         </Typography>
                         <TextField
@@ -206,7 +214,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                             <FormLabel id="demo-row-radio-buttons-group-label" style={{
                                 fontFamily: 'Poppins, sans-serif',
                                 fontWeight: 500,
-                                fontSize: '14px',
+                                fontSize: isMobile ? 12 : '14px',
                                 color: 'black'
                             }}>Gender<span style={{ color: 'red', marginLeft: '4px' }}>*</span></FormLabel>
                             <RadioGroup
@@ -219,9 +227,9 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                                     fontFamily: 'Poppins, sans-serif',
                                 }}
                             >
-                                <FormControlLabel value="female" control={<Radio />} label="Female" style={{ color: 'black', fontSize: '14px', fontWeight: 500 }} />
-                                <FormControlLabel value="male" control={<Radio />} label="Male" style={{ color: 'black', fontSize: '14px', fontWeight: 500 }} />
-                                <FormControlLabel value="other" control={<Radio />} label="Other" style={{ color: 'black', fontSize: '14px', fontWeight: 500 }} />
+                                <FormControlLabel value="female" control={<Radio />} label="Female" style={{ color: 'black', fontSize: isMobile ? 12 : '14px', fontWeight: 500 }} />
+                                <FormControlLabel value="male" control={<Radio />} label="Male" style={{ color: 'black', fontSize: isMobile ? 12 : '14px', fontWeight: 500 }} />
+                                <FormControlLabel value="other" control={<Radio />} label="Other" style={{ color: 'black', fontSize: isMobile ? 12 : '14px', fontWeight: 500 }} />
                             </RadioGroup>
                         </FormControl>
                     </Grid>
@@ -230,7 +238,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                             style={{
                                 fontFamily: 'Poppins, sans-serif',
                                 fontWeight: 500,
-                                fontSize: '14px'
+                                fontSize: isMobile ? 12 : '14px'
                             }}>College <span style={{ color: 'red', marginLeft: '4px' }}>*</span>
                         </Typography>
                         <TextField
@@ -247,7 +255,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                         <Typography color='black' align='left' style={{
                             fontFamily: 'Poppins, sans-serif',
                             fontWeight: 500,
-                            fontSize: '14px'
+                            fontSize: isMobile ? 12 : '14px'
                         }}>Education<span style={{ color: 'red', marginLeft: '4px' }}>*</span>
                         </Typography>
                         <Select
@@ -257,7 +265,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                             style={{
                                 fontFamily: 'Poppins, sans-serif',
                                 fontWeight: 500,
-                                fontSize: '14px'
+                                fontSize: isMobile ? 12 : '14px'
                             }}
                         >
                             <MenuItem value={"B.E Civil Engineering"} style={{ fontFamily: 'Poppins, sans-serif' }}>B.E Civil Engineering</MenuItem>
@@ -277,7 +285,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                                 style={{
                                     fontFamily: 'Poppins, sans-serif',
                                     fontWeight: 500,
-                                    fontSize: '14px'
+                                    fontSize: isMobile ? 11 : '14px'
                                 }}>
                                 {`What are your top 3 Target Roles (Target Job ${index + 1})`} <span style={{ color: 'red', marginLeft: '4px' }}>*</span>
                             </Typography>
@@ -315,7 +323,7 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                     Next
                 </GenerateButton>
             </UserDet>
-        </MainContainer>
+        </MainContainer >
     );
 }
 
