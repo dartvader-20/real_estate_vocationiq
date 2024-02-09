@@ -24,12 +24,19 @@ import { sumArrayWithSkills } from "../Questionaire/Questionaire1";
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { techKnowledgeScore, academicKnowledgeScore, designKnowledgeScore, answersStorage1 } from "../Questionaire/Questionaire4";
+import { isBArch } from "../UserDetails/UserDetails";
+import { answersStorage } from "../Questionaire/Questionaire3";
 
 let time;
 
 const MainContainer = styled('div')({
     height: "100vh",
     display: 'flex',
+});
+const ChartCanvas = styled('canvas')({
+    width: '400px',
+    height: '400px',
 });
 const MobileNavButton = styled(IconButton)({
     display: 'none',
@@ -149,6 +156,7 @@ const GeneratePdf = async (data) => {
     doc.text(`Date: ${time}`, 10, 60);
     doc.text("Target Jobs:", 10, 70)
     for (let i = 0; i < targetJobs.length; i++) {
+        doc.setFontSize(14);
         doc.text(`${i + 1}. ${targetJobs[i]}`, 42.5, 70 + (i * 10))
     }
     doc.setFontSize(12);
@@ -168,38 +176,54 @@ const GeneratePdf = async (data) => {
     const content = `
     Congratulations on completing your self-evaluation!
     Here are the results. 
-
-    You have mostly participated in the team activities during your schooling where you have had 
-    excellent outcomes. You are extremely happy working independently/ team setup. 
-    
-    Based on our analysis, the most suitable top jobs for you are:
-    
-    Put the table in the same format as strengths table. 
-    
-    Therefore, course recommended for the jobs are:
-    Use the table same as second table in strengths report
     `
     doc.text(content, 10, 25)
-    doc.addPage()
-    doc.rect(5, 5, doc.internal.pageSize.width - 10, doc.internal.pageSize.height - 10, 'S');
-    doc.setFont("times", "bold");
-    doc.setFontSize(20);
-    doc.text("Vocation", 160, 13)
-    doc.setTextColor(255, 0, 0)
-    doc.text("IQ", 188, 13)
-    doc.setTextColor(0, 0, 0)
-    doc.setFontSize(16);
-    doc.text("Report", 10, 15);
-    const columns = ["Target Jobs", "Courses", "Percentage"];
-    const rows = data.map(item => [item.targetJob, item.courses, `${item.percentage}%`]);
-    autoTable(doc, {
-        head: [columns],
-        body: rows,
-        startY: 20,
-        theme: "striped",
-        styles: { textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5, fontSize: 8, },
-        columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' }, 2: { cellWidth: 'auto' } },
-    });
+    doc.setFont('times', 'bold');
+    doc.text("Technical Assessment Results:", 10, 45)
+    if (isBArch) {
+        const columns = ["Knowledge", "Score"];
+        const rows = []
+        rows.push(["Technical Knowledge", `${techKnowledgeScore}%`])
+        rows.push(["Academic Knowledge", `${academicKnowledgeScore}%`])
+        rows.push(["Design Knowledge", `${designKnowledgeScore}%`])
+        autoTable(doc, {
+            head: [columns],
+            body: rows,
+            startY: 100,
+            theme: "grid",
+            headStyles: { textColor: "#ffffff", lineColor: "#808080", lineWidth: 0.3, fontSize: 13, },
+            styles: { textColor: [0, 0, 1], lineColor: "#808080", lineWidth: 0.3, fontSize: 9, },
+            columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } },
+        });
+        const column = ['Category', 'Response'];
+        let dataaa = Object.keys(answersStorage1).map(function (key) {
+            return [key, answersStorage[key]];
+        });
+        autoTable(doc, {
+            head: [column],
+            body: dataaa,
+            startY: 50,
+            theme: "grid",
+            headStyles: { textColor: "#ffffff", lineColor: "#808080", lineWidth: 0.3, fontSize: 13, },
+            styles: { textColor: [0, 0, 1], lineColor: "#808080", lineWidth: 0.3, fontSize: 9, },
+            columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } },
+        });
+    }
+    else {
+        const column = ['Category', 'Response'];
+        let dataaa = Object.keys(answersStorage).map(function (key) {
+            return [key, answersStorage[key]];
+        });
+        autoTable(doc, {
+            head: [column],
+            body: dataaa,
+            startY: 50,
+            theme: "grid",
+            headStyles: { textColor: "#ffffff", lineColor: "#808080", lineWidth: 0.3, fontSize: 13, },
+            styles: { textColor: [0, 0, 1], lineColor: "#808080", lineWidth: 0.3, fontSize: 9, },
+            columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } },
+        });
+    }
     doc.setFontSize(12);
     doc.text("© VocationIQ Technologies Private Limited", 10, 290)
     doc.addPage()
@@ -217,8 +241,8 @@ const GeneratePdf = async (data) => {
     const categories = [
         { name: 'People skills', skills: ['Communication', 'Interpersonal Skills', 'Negotiation'] },
         { name: 'Critical Thinking & Reasoning', skills: ['Problem solving', 'Attention to detail', 'Independence'] },
-        { name: 'Ability to take initiatives', skills: ['Independence', 'Adaptability', 'Negotiation'] },
-        { name: 'Self-management', skills: ['Time Management', 'Independence', 'Problem solving'] },
+        { name: 'Versatility', skills: ['Independence', 'Adaptability', 'Negotiation'] },
+        { name: 'Productivity', skills: ['Time Management', 'Independence', 'Problem solving'] },
         { name: 'Planning & organizing', skills: ['Time Management', 'Attention to detail', 'Problem solving'] },
         { name: 'Team Work', skills: ['Communication', 'Problem solving', 'Interpersonal Skills'] },
     ];
@@ -233,8 +257,88 @@ const GeneratePdf = async (data) => {
         head: [skillsHeader],
         body: skillsRows,
         startY: 20,
-        theme: "striped",
-        styles: { textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5, fontSize: 10, },
+        theme: "grid",
+        headStyles: { textColor: "#ffffff", lineColor: "#808080", lineWidth: 0.3, fontSize: 13, },
+        styles: { textColor: [0, 0, 1], lineColor: "#808080", lineWidth: 0.3, fontSize: 9, },
+        columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' }, 2: { cellWidth: 'auto' } },
+    });
+    doc.setFont('times', 'bold');
+    doc.text("(Synergy) People Skills:", 10, 80)
+    doc.setFont("times", "normal");
+    const content1 = `
+    score indicates the ability to effectively communicate, showcase interpersonal skills, and negotiate. It signifies
+    the combined effect of these abilities working together, resulting in a more powerful and effective impact in 
+    various personal and professional interactions, fostering understanding, collaboration, and successful 
+    outcomes.
+    `
+    doc.text(content1, 10, 82.5)
+    doc.setFont('times', 'bold');
+    doc.text("(Precision) Critical Thinking & Reasoning:", 10, 110)
+    doc.setFont("times", "normal");
+    const content2 = `
+    score indicates ability to holistically approach any given task, to take up problem-solving with meticulous 
+    attention to detail and the ability to work independently. It denotes a focused and accurate execution of 
+    responsibilities, ensuring thoroughness, reliability, and effective resolution of challenges with a keen eye 
+    for specifics.
+    `
+    doc.text(content2, 10, 112.5)
+    doc.setFont('times', 'bold');
+    doc.text("(Flexibility) Versatility:", 10, 145)
+    doc.setFont("times", "normal");
+    const content3 = `
+    score indicates multifaceted approach to challenges. It encompasses independence by self-reliantly navigating 
+    diverse situations, adaptability in adjusting to changing environments, and negotiation skills in effectively
+    engaging with others. This combination fosters a dynamic and resourceful ability to thrive in various contexts.
+    `
+    doc.text(content3, 10, 147.5)
+    doc.setFont('times', 'bold');
+    doc.text("(Efficiency) Productivity:", 10, 175)
+    doc.setFont("times", "normal");
+    const content4 = `
+    score represents the individual’s ability to optimize resource allocation, proactively taking initiative to address 
+    challenges, and systematically solving problems. This combination ensures streamlined processes, timely
+    execution, and a proactive approach to achieving goals with optimal use of time and resources.
+    `
+    doc.text(content4, 10, 177.5)
+    doc.setFont('times', 'bold');
+    doc.text("(Resourcefulness) Planning & Organization:", 10, 205)
+    doc.setFont("times", "normal");
+    const content5 = `
+    score encapsulates the adept utilization of time, adaptability, and problem-solving skills. It signifies the ability 
+    to efficiently manage time, swiftly adapt to changing circumstances, and creatively solve problems. A 
+    resourceful individual navigates challenges adeptly, ensuring optimal outcomes in diverse situations.
+    `
+    doc.text(content5, 10, 207.5)
+    doc.setFont('times', 'bold');
+    doc.text("(Collaboration)Team work:", 10, 235)
+    doc.setFont("times", "normal");
+    const content6 = `
+    score indicates one ability to effectively engage within the team to collectively address challenges, fostering 
+    open communication channels, and leveraging diverse strengths. Collaborative efforts enhance problem-solving
+    by tapping into a collective pool of ideas, insights, and expertise.
+    `
+    doc.text(content6, 10, 237.5)
+    doc.setFontSize(12);
+    doc.text("© VocationIQ Technologies Private Limited", 10, 290)
+    doc.addPage()
+    doc.rect(5, 5, doc.internal.pageSize.width - 10, doc.internal.pageSize.height - 10, 'S');
+    doc.setFont("times", "bold");
+    doc.setFontSize(20);
+    doc.text("Vocation", 160, 13)
+    doc.setTextColor(255, 0, 0)
+    doc.text("IQ", 188, 13)
+    doc.setTextColor(0, 0, 0)
+    doc.setFontSize(16);
+    doc.text("Report", 10, 15);
+    const columns = ["Target Jobs", "Courses", "Percentage"];
+    const rows = data.map(item => [item.targetJob, item.courses, `${item.percentage}%`]);
+    autoTable(doc, {
+        head: [columns],
+        body: rows,
+        startY: 18,
+        theme: "grid",
+        headStyles: { textColor: "#ffffff", lineColor: "#808080", lineWidth: 0.3, fontSize: 9.5, },
+        styles: { textColor: [0, 0, 1], lineColor: "#808080", lineWidth: 0.3, fontSize: 8, },
         columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' }, 2: { cellWidth: 'auto' } },
     });
     doc.setFontSize(12);

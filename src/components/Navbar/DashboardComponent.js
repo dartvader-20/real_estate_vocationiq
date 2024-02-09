@@ -27,7 +27,7 @@ const FirstHalf = styled('div')({
     position: 'relative',
     '@media (max-width: 768px)': {
         width: '50%',
-        borderRight: 'none',
+        borderRight: '2.5px solid #D8D0D0',
         borderBottom: '2.5px solid #D8D0D0',
     },
 });

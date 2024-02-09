@@ -14,6 +14,7 @@ import Questionaire1 from '../Questionaire/Questionaire1';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import validator from 'validator';
 
 const MainContainer = styled('div')({
     height: "100vh",
@@ -66,7 +67,7 @@ const questions = [
     'I have the necessary skills to address challenges and solve them.',
     'I make winning decisions on the spot.',
     'I am very persuasive and good at negotiating with my friends or family to get the desired outcome.',
-    'I am good at resolving any conflicts that might arise within the family and friend’s circle.',
+    'I am good at resolving any conflicts that might arise within my team and in my friends circle.',
     'I am thorough in observing and recording details.',
     'I always check my work before submission and double check math formula or any number involved in the work.',
     'I efficiently manage time and resources to finish my work on time.',
@@ -127,10 +128,6 @@ const UserDetails = () => {
     const [ratings, setRatings] = useState({});
     const [validationError, setValidationError] = React.useState(null);
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-
-    // const handleTabChange = (event, newValue) => {
-    //     setActiveTab(newValue);
-    // };
 
     React.useEffect(() => {
 
@@ -194,6 +191,10 @@ const UserDetails = () => {
             case 0:
                 emptyFields = ['name', 'email', 'number', 'education', 'location', 'college', 'gender']
                     .filter(field => !studentDetailsData[field]);
+                const isValidEmail = validator.isEmail(studentDetailsData.email);
+                if (!isValidEmail) {
+                    emptyFields.push("Valid Email");
+                }
                 if (selectedTargetJobs.length < 3) {
                     emptyFields.push("Traget Jobs");
                 }

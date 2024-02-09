@@ -14,6 +14,7 @@ const ContentHalf = styled('div')({
     overflowY: 'auto',
     width: '80vw'
 });
+
 const GenerateButton = styled('button')({
     backgroundColor: '#2c3a84',
     padding: '10px 30px',
@@ -26,9 +27,16 @@ const GenerateButton = styled('button')({
         background: 'black',
         color: 'white',
     },
+    '@media (max-width: 768px)': {
+        width: 'auto',
+        textAlign: 'center',
+        fontSize: '12px',
+        marginTop: 5
+    },
 });
 
 const DetailsDashboard = ({ name, data }) => {
+    const isMobile = window.innerWidth <= 768;
     const [dialogOpen, setDialogOpen] = React.useState(false);
     const [selectedItemYo, setSelectedItemYo] = React.useState(null);
     const navigate = useNavigate();
@@ -75,10 +83,10 @@ const DetailsDashboard = ({ name, data }) => {
                         background: '#9CE6F2',
                     }}>
                         <div style={{ padding: '15px' }}>
-                            <Typography style={{ fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: 600 }}>Test Taken:</Typography>
+                            <Typography style={{ fontFamily: 'Poppins, sans-serif', fontSize: isMobile ? '12px' : '16px', fontWeight: 600 }}>Test Taken:</Typography>
                         </div>
                         <div style={{ padding: '15px' }}>
-                            <Typography style={{ fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: 600 }}>{item.timestamp}</Typography>
+                            <Typography style={{ fontFamily: 'Poppins, sans-serif', fontSize: isMobile ? '12px' : '16px', fontWeight: 600 }}>{item.timestamp}</Typography>
                         </div>
                         <GenerateButton
                             onClick={() => handleDialogOpen(item.yo)}

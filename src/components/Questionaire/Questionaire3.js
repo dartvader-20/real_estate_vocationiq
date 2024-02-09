@@ -4,9 +4,8 @@ import {
     Box,
     Typography,
     FormControlLabel,
-    FormControl,
     Radio,
-    Checkbox
+    RadioGroup
 } from '@mui/material';
 import { useNavigate, } from "react-router-dom";
 import { getUserDetails } from '../HomePage/userManagement';
@@ -85,7 +84,6 @@ const questionnaireData = [
             "Practical applications require modifications to theoretical concepts.",
             "Theoretical concepts are directly applicable without modifications.",
         ],
-        type: 'radio',
     },
     {
         question: "Project Experience: How do you perceive the importance of practical project experience in complementing theoretical learning?",
@@ -94,7 +92,6 @@ const questionnaireData = [
             "Not crucial theory suffices.",
             "Enhances skills but doesn't significantly impact learning.",
         ],
-        type: 'radio',
     },
     {
         question: "Understanding of Industry Practices.",
@@ -103,7 +100,6 @@ const questionnaireData = [
             "Moderately familiar with some updates",
             "Not very familiar or updated"
         ],
-        type: 'radio',
     },
     {
         question: "Academic Knowledge: Which areas do you feel most confident about in your engineering discipline?",
@@ -112,7 +108,6 @@ const questionnaireData = [
             "Practical applications",
             "Both theoretical and practical aspects equally"
         ],
-        type: 'checkbox',
     },
     {
         question: "Problem-solving and Analytical Skills: How often do you employ critical thinking and analysis in your academic projects?",
@@ -121,7 +116,6 @@ const questionnaireData = [
             "Sometimes, depending on the project",
             "Rarely, it's not a significant consideration"
         ],
-        type: 'checkbox',
     },
     {
         question: "Learning Methodology: Which learning method do you fi nd most effective in grasping engineering concepts?",
@@ -130,7 +124,6 @@ const questionnaireData = [
             "Classroom lectures and discussions",
             "Practical applications and hands-on experience",
         ],
-        type: 'radio',
     },
     {
         question: "How important do you believe teamwork and collaboration are in achieving successful engineering projects?",
@@ -139,7 +132,6 @@ const questionnaireData = [
             "Somewhat important individual efforts suffice",
             "Not necessary individual efforts are sufficient"
         ],
-        type: 'radio',
     },
     {
         question: "Adaptability and Initiative: How do you view adaptability in handling unforeseen challenges in a work environment?",
@@ -148,7 +140,6 @@ const questionnaireData = [
             "Helpful, but not a critical skill",
             "Not necessary following established procedures is sufficient",
         ],
-        type: 'radio',
     },
     {
         question: "Professional Development: How proactive are you in seeking professional development opportunities beyond the curriculum?",
@@ -157,7 +148,6 @@ const questionnaireData = [
             "Occasionally explore if time permits",
             "Rarely seek additional development beyond academics"
         ],
-        type: 'radio',
     },
     {
         question: "How interested are you in upskilling or further education beyond your current coursework to enhance your industry readiness?",
@@ -166,8 +156,22 @@ const questionnaireData = [
             "Moderately interested open to possibilities",
             "Not interested current knowledge suffices"
         ],
-        type: 'checkbox',
     },
+];
+
+const answersStorage = {};
+
+const keyMapping = [
+    "Application of concepts",
+    "Project Experience",
+    "Understanding of Industry Practices",
+    "Academic knowledge",
+    "Problem-solving and Analytical Skills",
+    "Learning Methodology",
+    "Teamwork and Collaboration",
+    "Adaptability and Initiative",
+    "Professional Development",
+    "Upskilling Needs",
 ];
 
 const Questionaire3 = () => {
@@ -183,6 +187,17 @@ const Questionaire3 = () => {
     ];
     const activePageIndex = routePaths.indexOf('/dashboard');
     const handleNextPage = () => {
+        const nextQuestion = questionnaireData[currentQuestionIndex + 1];
+
+        const questionKey = keyMapping[currentQuestionIndex];
+        const nextQuestionKey = nextQuestion ? keyMapping[currentQuestionIndex + 1] : null;
+
+        const currentAnswer = answers[currentQuestionIndex];
+        const nextAnswer = answers[currentQuestionIndex + 1];
+
+        answersStorage[questionKey] = currentAnswer;
+        answersStorage[nextQuestionKey] = nextAnswer;
+
         if (currentQuestionIndex + 2 < questionnaireData.length) {
             setCurrentQuestionIndex((prevIndex) => prevIndex + 2);
         } else {
@@ -208,16 +223,6 @@ const Questionaire3 = () => {
         });
     };
 
-    const handleCheckboxChange = (event, questionIndex) => {
-        setAnswers((prevAnswers) => {
-            const newAnswers = [...prevAnswers];
-            newAnswers[questionIndex] = event.target.checked
-                ? questionnaireData[questionIndex].options[event.target.value]
-                : '';
-            return newAnswers;
-        });
-    };
-
     const renderQuestion = (question, questionIndex) => (
         <div key={questionIndex}>
             <Typography color='black'
@@ -229,42 +234,23 @@ const Questionaire3 = () => {
                 }}>
                 {question.question}
             </Typography>
-            <FormControl>
-                {question.options.map((option, index) =>
-                    question.type === 'checkbox' ? (
-                        <FormControlLabel
-                            key={index}
-                            control={
-                                <Checkbox
-                                    checked={
-                                        answers[questionIndex] &&
-                                        answers[questionIndex].includes(option)
-                                    }
-                                    onChange={(event) => handleCheckboxChange(event, questionIndex)}
-                                    value={index}
-                                />
-                            }
-                            label={<Typography
-                                style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
-                            >
-                                {option}
-                            </Typography>}
-                        />
-                    ) : (
-                        <FormControlLabel
-                            key={index}
-                            value={option}
-                            control={<Radio />}
-                            label={<Typography
-                                style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
-                            >
-                                {option}
-                            </Typography>}
-                            onChange={(event) => handleRadioChange(event, questionIndex)}
-                        />
-                    )
-                )}
-            </FormControl>
+            <RadioGroup
+                value={answers[questionIndex]}
+                onChange={(event) => handleRadioChange(event, questionIndex)}
+            >
+                {question.options.map((option, index) => (
+                    <FormControlLabel
+                        key={index}
+                        value={option}
+                        control={<Radio />}
+                        label={<Typography
+                            style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
+                        >
+                            {option}
+                        </Typography>}
+                    />
+                ))}
+            </RadioGroup>
         </div>
     );
 
@@ -316,4 +302,5 @@ const Questionaire3 = () => {
     )
 }
 
+export { answersStorage }
 export default Questionaire3;

@@ -176,7 +176,7 @@ const Questionaire2 = () => {
         const requiredSkillsForSelectedJobs = targetJobs.flatMap((job) => requiredSkillsForTargetJobs[job]);
         const matchingSkills = Object.entries(responsesBinary).filter(([key, value]) => requiredSkillsForSelectedJobs.includes(key) && value === 1);
         const percentageMatch = (matchingSkills.length / requiredSkillsForSelectedJobs.length) * 100;
-        console.log('Percentage of skill matches:', percentageMatch);
+        console.log(percentageMatch)
     };
     const routePaths = [
         '/dashboard',
@@ -199,7 +199,6 @@ const Questionaire2 = () => {
 
                 matchPercentage = (matchedSkills / requiredSkills.length) * 100;
                 matchPercentages[targetJob] = (matchPercentage + percentage) / 2;
-                console.log("matchPercentages", matchPercentages, "matchPercentage", matchPercentage)
             });
             if (isBArch === true) {
                 navigate('/questionaire4')

@@ -4,9 +4,8 @@ import {
     Box,
     Typography,
     FormControlLabel,
-    FormControl,
     Radio,
-    Checkbox
+    RadioGroup,
 } from '@mui/material';
 import { useNavigate, } from "react-router-dom";
 import { getUserDetails } from '../HomePage/userManagement';
@@ -77,6 +76,7 @@ const GenerateButton2 = styled('button')({
     },
 });
 
+const answersStorage1 = {};
 const questionnaireData = [
     {
         question: "What are the primary responsibilities of an architect/designer within a firm?",
@@ -86,7 +86,6 @@ const questionnaireData = [
             "Site analysis and feasibility studies",
             "All of the above",
         ],
-        type: 'radio',
     },
     {
         question: "Which software proficiency is essential for architectural design?",
@@ -96,7 +95,6 @@ const questionnaireData = [
             "SketchUp",
             "All of the above",
         ],
-        type: 'radio',
     },
     {
         question: "What factor(s) significantly influence(s) sustainable design practices?",
@@ -106,7 +104,15 @@ const questionnaireData = [
             "Client preferences",
             "Government regulations"
         ],
-        type: 'radio',
+    },
+    {
+        question: "Which architectural style is characterized by minimalism, clean lines, and open spaces?",
+        options: [
+            "Modernist",
+            "Postmodernist",
+            "Brutalist",
+            "Contemporary"
+        ],
     },
     {
         question: "What principle defines the \"Golden Ratio\" in architectural design?",
@@ -116,7 +122,6 @@ const questionnaireData = [
             "2:3",
             "3:4"
         ],
-        type: 'radio',
     },
     {
         question: "Which historical architect is known for the design of Falling water?",
@@ -126,17 +131,15 @@ const questionnaireData = [
             "Zaha Hadid",
             "Frank Lloyd Wright"
         ],
-        type: 'radio',
     },
     {
-        question: "Design Knowledge: Which element(s) are crucial for creating a successful public space?",
+        question: "Which element(s) are crucial for creating a successful public space?",
         options: [
             "Aesthetic enhancement",
             "Structural integrity",
             "Environmental impact",
             "All of the above",
         ],
-        type: 'radio',
     },
     {
         question: "What's the importance of the design process in architecture?",
@@ -146,39 +149,131 @@ const questionnaireData = [
             "It helps meet project deadlines",
             "It has no significant impact on the final outcome",
         ],
-        type: 'radio',
     },
-    // {
-    //     question: "Work Atmosphere and Expectations: When considering a potential employer, what matters most to you?",
-    //     options: [
-    //         "Salary and benefits",
-    //         "Collaborative work culture",
-    //         "Opportunities for skill development",
-    //         "Location and city of placement",
-    //     ],
-    //     type: 'radio',
-    // },
-    // {
-    //     question: "How do you prioritize work-life balance in a professional setting?",
-    //     options: [
-    //         "It's crucial for overall well-being",
-    //         "It's secondary to career advancement",
-    //         "It's not a major concern",
-    //         "It depends on project deadlines"
-    //     ],
-    //     type: 'radio',
-    // },
-    // {
-    //     question: "What salary range do you expect for an entry-level position in architecture/design?",
-    //     options: [
-    //         "Below industry standard",
-    //         "Industry standard",
-    //         "Above industry standard",
-    //         "Not sure/No preference"
-    //     ],
-    //     type: 'radio',
-    // },
 ];
+
+const questionnaireData1 = [
+    {
+        question: "Understanding of Industry Practices.",
+        options: [
+            "Extremely familiar and updated",
+            "Moderately familiar with some updates",
+            "Not very familiar or updated"
+        ],
+    },
+    {
+        question: "Which areas do you feel most confident about in your engineering discipline?",
+        options: [
+            "Theoretical concepts",
+            "Practical applications",
+            "Both theoretical and practical aspects equally"
+        ],
+    },
+    {
+        question: "How often do you employ critical thinking and analysis in your academic projects?",
+        options: [
+            " Always, it's a core part of my approach",
+            "Sometimes, depending on the project",
+            "Rarely, it's not a significant consideration"
+        ],
+    },
+    {
+        question: "Which learning method do you fi nd most effective in grasping engineering concepts?",
+        options: [
+            "Self-study and research",
+            "Classroom lectures and discussions",
+            "Practical applications and hands-on experience",
+        ],
+    },
+    {
+        question: "How important do you believe teamwork and collaboration are in achieving successful engineering projects?",
+        options: [
+            "Crucial projects thrive on collaboration",
+            "Somewhat important individual efforts suffice",
+            "Not necessary individual efforts are sufficient"
+        ],
+    },
+    {
+        question: "How do you view adaptability in handling unforeseen challenges in a work environment?",
+        options: [
+            "Essential for success adaptability is key",
+            "Helpful, but not a critical skill",
+            "Not necessary following established procedures is sufficient",
+        ],
+    },
+    {
+        question: "How proactive are you in seeking professional development opportunities beyond the curriculum?",
+        options: [
+            "Actively seek and pursue such opportunities",
+            "Occasionally explore if time permits",
+            "Rarely seek additional development beyond academics"
+        ],
+    },
+    {
+        question: "How interested are you in upskilling or further education beyond your current coursework to enhance your industry readiness?",
+        options: [
+            "Highly interested actively seek opportunities",
+            "Moderately interested open to possibilities",
+            "Not interested current knowledge suffices"
+        ],
+    },
+    {
+        question: "When considering a potential employer, what matters most to you?",
+        options: [
+            "Salary and benefits",
+            "Collaborative work culture",
+            "Opportunities for skill development",
+            "Location and city of placement",
+        ],
+    },
+    {
+        question: "How do you prioritize work-life balance in a professional setting?",
+        options: [
+            "It's crucial for overall well-being",
+            "It's secondary to career advancement",
+            "It's not a major concern",
+            "It depends on project deadlines"
+        ],
+    },
+    {
+        question: "What salary range do you expect for an entry-level position in architecture/design?",
+        options: [
+            "Below industry standard",
+            "Industry standard",
+            "Above industry standard",
+            "Not sure/No preference"
+        ],
+    },
+];
+
+const keyMapping = [
+    "Application of concepts",
+    "Project Experience",
+    "Understanding of Industry Practices",
+    "Academic knowledge",
+    "Problem-solving and Analytical Skills",
+    "Learning Methodology",
+    "Teamwork and Collaboration",
+    "Adaptability and Initiative",
+    "Professional Development",
+    "Upskilling Needs",
+    "Employer Preference",
+    "Professional setting",
+    "Salary Expectation"
+];
+
+const correctAnswers = [
+    "All of the above",
+    "All of the above",
+    "Material selection and energy efficiency",
+    "Modernist",
+    "1:1.618",
+    "Frank Lloyd Wright",
+    "All of the above",
+    "It facilitates problem-solving and innovation",
+];
+
+let techKnowledgeScore, academicKnowledgeScore, designKnowledgeScore;
 
 const Questionaire4 = () => {
     const navigate = useNavigate();
@@ -186,16 +281,46 @@ const Questionaire4 = () => {
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState(Array(questionnaireData.length).fill(''));
+    const [answers1, setAnswers1] = useState(Array(questionnaireData.length).fill(''));
     const routePaths = [
         '/userdetails',
         '/dashboard',
         '/quetionaire1',
     ];
     const activePageIndex = routePaths.indexOf('/dashboard');
+    const calculateSectionScore = (start, end, markCorrect) => {
+        let sectionScore = 0;
+        for (let i = start; i <= end; i++) {
+            if (markCorrect || answers[i] === correctAnswers[i]) {
+                sectionScore++;
+            }
+        }
+        const totalQuestions = end - start + 1;
+        const percentage = (sectionScore / totalQuestions) * 100;
+        return percentage.toFixed(2);
+    };
     const handleNextPage = () => {
+        const nextQuestion = questionnaireData[currentQuestionIndex + 1];
+
+        const questionKey = keyMapping[currentQuestionIndex];
+        const nextQuestionKey = nextQuestion ? keyMapping[currentQuestionIndex + 1] : null;
+
+        const currentAnswer = answers[currentQuestionIndex];
+        const nextAnswer = answers[currentQuestionIndex + 1];
+
+        answersStorage1[questionKey] = currentAnswer;
+        answersStorage1[nextQuestionKey] = nextAnswer;
         if (currentQuestionIndex + 2 < questionnaireData.length) {
             setCurrentQuestionIndex((prevIndex) => prevIndex + 2);
         } else {
+            techKnowledgeScore = calculateSectionScore(0, 2);
+            academicKnowledgeScore = calculateSectionScore(3, 5);
+            designKnowledgeScore = calculateSectionScore(6, 7);
+
+            console.log("Technical Knowledge Score:", techKnowledgeScore);
+            console.log("Academic Knowledge Score:", academicKnowledgeScore);
+            console.log("Design Knowledge Score:", designKnowledgeScore);
+
             navigate('/computation');
         }
     };
@@ -218,12 +343,10 @@ const Questionaire4 = () => {
         });
     };
 
-    const handleCheckboxChange = (event, questionIndex) => {
-        setAnswers((prevAnswers) => {
+    const handleRadioChange1 = (event, questionIndex) => {
+        setAnswers1((prevAnswers) => {
             const newAnswers = [...prevAnswers];
-            newAnswers[questionIndex] = event.target.checked
-                ? questionnaireData[questionIndex].options[event.target.value]
-                : '';
+            newAnswers[questionIndex] = event.target.value;
             return newAnswers;
         });
     };
@@ -239,44 +362,57 @@ const Questionaire4 = () => {
                 }}>
                 {question.question}
             </Typography>
-            <FormControl>
-                {question.options.map((option, index) =>
-                    question.type === 'checkbox' ? (
-                        <FormControlLabel
-                            key={index}
-                            control={
-                                <Checkbox
-                                    checked={
-                                        answers[questionIndex] &&
-                                        answers[questionIndex].includes(option)
-                                    }
-                                    onChange={(event) => handleCheckboxChange(event, questionIndex)}
-                                    value={index}
-                                />
-                            }
-                            label={<Typography
-                                style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
-                            >
-                                {option}
-                            </Typography>}
-                        />
-                    ) : (
-                        <FormControlLabel
-                            key={index}
-                            value={option}
-                            control={<Radio />}
-                            label={<Typography
-                                style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
-                            >
-                                {option}
-                            </Typography>}
-                            onChange={(event) => handleRadioChange(event, questionIndex)}
-                        />
-                    )
-                )}
-            </FormControl>
+            <RadioGroup
+                value={answers[questionIndex]}
+                onChange={(event) => handleRadioChange(event, questionIndex)}
+            >
+                {question.options.map((option, index) => (
+                    <FormControlLabel
+                        key={index}
+                        value={option}
+                        control={<Radio />}
+                        label={<Typography
+                            style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
+                        >
+                            {option}
+                        </Typography>}
+                    />
+                ))}
+            </RadioGroup>
         </div>
     );
+
+    const renderQuestion1 = (question, questionIndex) => (
+        <div key={questionIndex}>
+            <Typography color='black'
+                style={{
+                    fontFamily: 'Poppins, sans-serif',
+                    fontSize: isMobile ? '12px' : '20px',
+                    fontWeight: 600,
+                    marginLeft: '8px'
+                }}>
+                {question.question}
+            </Typography>
+            <RadioGroup
+                value={answers1[questionIndex]}
+                onChange={(event) => handleRadioChange1(event, questionIndex)}
+            >
+                {question.options.map((option, index) => (
+                    <FormControlLabel
+                        key={index}
+                        value={option}
+                        control={<Radio />}
+                        label={<Typography
+                            style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
+                        >
+                            {option}
+                        </Typography>}
+                    />
+                ))}
+            </RadioGroup>
+        </div>
+    );
+
 
     return (
         <MainContainer>
@@ -315,6 +451,9 @@ const Questionaire4 = () => {
                         {renderQuestion(questionnaireData[currentQuestionIndex], currentQuestionIndex)}
                         {currentQuestionIndex + 1 < questionnaireData.length &&
                             renderQuestion(questionnaireData[currentQuestionIndex + 1], currentQuestionIndex + 1)}
+                        {renderQuestion1(questionnaireData1[currentQuestionIndex], currentQuestionIndex)}
+                        {currentQuestionIndex + 1 < questionnaireData.length &&
+                            renderQuestion1(questionnaireData1[currentQuestionIndex + 1], currentQuestionIndex + 1)}
                     </Box>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', width: '90%', marginTop: 15 }}>
@@ -326,4 +465,5 @@ const Questionaire4 = () => {
     )
 }
 
+export { techKnowledgeScore, designKnowledgeScore, academicKnowledgeScore, answersStorage1 }
 export default Questionaire4;

@@ -210,30 +210,6 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <FormControl>
-                            <FormLabel id="demo-row-radio-buttons-group-label" style={{
-                                fontFamily: 'Poppins, sans-serif',
-                                fontWeight: 500,
-                                fontSize: isMobile ? 12 : '14px',
-                                color: 'black'
-                            }}>Gender<span style={{ color: 'red', marginLeft: '4px' }}>*</span></FormLabel>
-                            <RadioGroup
-                                row
-                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="row-radio-buttons-group"
-                                value={data.gender}
-                                onChange={handleGenderChange}
-                                style={{
-                                    fontFamily: 'Poppins, sans-serif',
-                                }}
-                            >
-                                <FormControlLabel value="female" control={<Radio />} label="Female" style={{ color: 'black', fontSize: isMobile ? 12 : '14px', fontWeight: 500 }} />
-                                <FormControlLabel value="male" control={<Radio />} label="Male" style={{ color: 'black', fontSize: isMobile ? 12 : '14px', fontWeight: 500 }} />
-                                <FormControlLabel value="other" control={<Radio />} label="Other" style={{ color: 'black', fontSize: isMobile ? 12 : '14px', fontWeight: 500 }} />
-                            </RadioGroup>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
                         <Typography color='black' align='left'
                             style={{
                                 fontFamily: 'Poppins, sans-serif',
@@ -265,7 +241,8 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                             style={{
                                 fontFamily: 'Poppins, sans-serif',
                                 fontWeight: 500,
-                                fontSize: isMobile ? 12 : '14px'
+                                fontSize: isMobile ? 12 : '14px',
+                                marginTop: isMobile ? 0 : 15
                             }}
                         >
                             <MenuItem value={"B.E Civil Engineering"} style={{ fontFamily: 'Poppins, sans-serif' }}>B.E Civil Engineering</MenuItem>
@@ -303,6 +280,12 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                                     value={selectedTargetJobs[index] || ""}
                                     onChange={handleTargetJobChange(index)}
                                     fullWidth
+                                    style={{
+                                        fontFamily: 'Poppins, sans-serif',
+                                        fontWeight: 500,
+                                        fontSize: isMobile ? 12 : '14px',
+                                        marginTop: isMobile ? 0 : 15
+                                    }}
                                 >
                                     {getAvailableOptions(index).map((option) => (
                                         <MenuItem key={option} value={option}>
@@ -315,6 +298,30 @@ const StudentDetails = ({ data, setData, handleNextClick, selectedTargetJobs, se
                             )}
                         </Grid>
                     ))}
+                    <Grid item xs={12} sm={6}>
+                        <FormControl>
+                            <FormLabel id="demo-row-radio-buttons-group-label" style={{
+                                fontFamily: 'Poppins, sans-serif',
+                                fontWeight: 500,
+                                fontSize: isMobile ? 12 : '14px',
+                                color: 'black'
+                            }}>Gender<span style={{ color: 'red', marginLeft: '4px' }}>*</span></FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                name="row-radio-buttons-group"
+                                value={data.gender}
+                                onChange={handleGenderChange}
+                                style={{
+                                    fontFamily: 'Poppins, sans-serif',
+                                }}
+                            >
+                                <FormControlLabel value="female" control={<Radio />} label="Female" style={{ color: 'black', fontSize: isMobile ? 12 : '14px', fontWeight: 500 }} />
+                                <FormControlLabel value="male" control={<Radio />} label="Male" style={{ color: 'black', fontSize: isMobile ? 12 : '14px', fontWeight: 500 }} />
+                                <FormControlLabel value="other" control={<Radio />} label="Other" style={{ color: 'black', fontSize: isMobile ? 12 : '14px', fontWeight: 500 }} />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
                 </Grid>
                 {validationError && <p style={{ color: 'red', marginTop: '10px', textAlign: 'center' }}>{validationError}</p>}
                 <GenerateButton
