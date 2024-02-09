@@ -110,6 +110,7 @@ const DashboardComponent = () => {
             const dateRef = ref(db, `users/${userUid}/dateArray`);
             const snapshot = await get(dateRef);
             dates = snapshot.val();
+            console.log(dates)
         }
     }
     return (

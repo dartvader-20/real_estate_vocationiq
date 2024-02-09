@@ -34,10 +34,6 @@ const MainContainer = styled('div')({
     height: "100vh",
     display: 'flex',
 });
-const ChartCanvas = styled('canvas')({
-    width: '400px',
-    height: '400px',
-});
 const MobileNavButton = styled(IconButton)({
     display: 'none',
     '@media (max-width: 768px)': {
@@ -128,7 +124,7 @@ const GeneratePdf = async (data) => {
         const newTimestamp = new Date().toString();
         const dateObject = new Date(newTimestamp);
         const formattedDate = dateObject.toISOString().split('T')[0];
-        existingDates[newTimestamp] = "matchPercentages";
+        existingDates[newTimestamp] = data;
         time = formattedDate
         set(dateRef, existingDates);
     }
@@ -189,19 +185,22 @@ const GeneratePdf = async (data) => {
         autoTable(doc, {
             head: [columns],
             body: rows,
-            startY: 100,
+            startY: 170,
             theme: "grid",
             headStyles: { textColor: "#ffffff", lineColor: "#808080", lineWidth: 0.3, fontSize: 13, },
             styles: { textColor: [0, 0, 1], lineColor: "#808080", lineWidth: 0.3, fontSize: 9, },
             columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } },
         });
+        doc.setFont('times', 'bold');
+        doc.text("Knowledge Results:", 10, 165)
         const column = ['Category', 'Response'];
-        let dataaa = Object.keys(answersStorage1).map(function (key) {
-            return [key, answersStorage[key]];
+        console.log("dcdcd", answersStorage1)
+        let dataa = Object.keys(answersStorage1).map(function (key) {
+            return [key, answersStorage1[key]];
         });
         autoTable(doc, {
             head: [column],
-            body: dataaa,
+            body: dataa,
             startY: 50,
             theme: "grid",
             headStyles: { textColor: "#ffffff", lineColor: "#808080", lineWidth: 0.3, fontSize: 13, },
@@ -351,7 +350,6 @@ const Computation = () => {
     const isMobile = window.innerWidth <= 768;
     const [isMobileNavOpen, setIsMobileNavOpen] = React.useState(false);
     useEffect(() => {
-        // Sorting matchPercentages
         const sortedMatchData = Object.entries(matchPercentages)
             .sort(([, a], [, b]) => b - a)
             .map(([targetJob, percentage]) => ({

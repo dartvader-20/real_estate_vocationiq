@@ -1,6 +1,14 @@
 import React from 'react'
 import { styled } from '@mui/system';
-import { Typography, Box, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import {
+    Typography, Box, Dialog, DialogTitle, DialogContent, Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+} from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import EmailAvatar from '../HomePage/EmailAvatar';
 
@@ -35,6 +43,8 @@ const GenerateButton = styled('button')({
     },
 });
 
+
+
 const DetailsDashboard = ({ name, data }) => {
     const isMobile = window.innerWidth <= 768;
     const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -64,8 +74,56 @@ const DetailsDashboard = ({ name, data }) => {
         return quartiles;
     };
 
-    const quartiles = selectedItemYo ? calculateQuartiles(selectedItemYo) : null;
+    const renderTable = () => {
+        if (!data || !data.length || !data[0].yo || !data[0].yo.length) {
+            return <Typography>No result available.</Typography>;
+        }
 
+        const innerData = data[0].yo; // Assuming that 'yo' is the key for the inner array
+
+        return (
+            <TableContainer component={Paper} style={{
+                borderRadius: "12px", marginTop: '20px', fontFamily: 'Poppins, sans-serif'
+            }}>
+                <Table>
+                    <TableHead style={{ background: '#2c3a84' }}>
+                        <TableRow>
+                            <TableCell style={{
+                                color: 'white',
+                                fontFamily: 'Poppins, sans-serif',
+                                fontWeight: 500,
+                                fontSize: isMobile ? '10px' : '15px',
+                                border: '1px solid white'
+                            }}>Target Job</TableCell>
+                            <TableCell style={{
+                                color: 'white',
+                                fontFamily: 'Poppins, sans-serif',
+                                fontWeight: 500,
+                                fontSize: isMobile ? '10px' : '15px',
+                                border: '1px solid white'
+                            }}>Courses</TableCell>
+                            <TableCell style={{
+                                color: 'white',
+                                fontFamily: 'Poppins, sans-serif',
+                                fontWeight: 500,
+                                fontSize: isMobile ? '10px' : '15px',
+                                border: '1px solid white'
+                            }}>Percentage</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {innerData.map((item, index) => (
+                            <TableRow key={index} style={{ background: '#2C3A841A', fontFamily: 'Poppins, sans-serif' }}>
+                                <TableCell style={{ border: '1px solid white' }}>{item.targetJob}</TableCell>
+                                <TableCell style={{ border: '1px solid white' }}>{item.courses}</TableCell>
+                                <TableCell style={{ border: '1px solid white' }}>{item.percentage}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    };
     return (
         <ContentHalf>
             <div style={{ display: "flex", alignItems: 'center', justifyContent: 'flex-end', width: '90%', padding: '10px' }}>
@@ -99,23 +157,7 @@ const DetailsDashboard = ({ name, data }) => {
             <Dialog open={dialogOpen} onClose={handleDialogClose} >
                 <DialogTitle variant='h4' style={{ fontFamily: 'Poppins, sans-serif' }}><b>Your Result</b></DialogTitle>
                 <DialogContent>
-                    {quartiles ? (
-                        Object.entries(quartiles).map(([quartile, questions], index) => (
-                            <div key={index} >
-                                <Typography variant="h5"><b>{quartile}</b></Typography>
-                                {questions.map((item, questionIndex) => (
-                                    <div key={questionIndex}>
-                                        <Typography style={{
-                                            fontFamily: 'Poppins, sans-serif',
-                                            fontSize: '12px'
-                                        }}>Rank {questionIndex + 1}: {item.questions}</Typography>
-                                    </div>
-                                ))}
-                            </div>
-                        ))
-                    ) : (
-                        <Typography>No result selected.</Typography>
-                    )}
+                    {renderTable()}
                 </DialogContent>
             </Dialog>
             <GenerateButton onClick={() => { navigate("/userdetails"); }}>Take Assessment</GenerateButton>

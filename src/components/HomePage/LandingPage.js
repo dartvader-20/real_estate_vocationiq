@@ -141,7 +141,7 @@ const LandingPage = () => {
                         fontFamily: 'Poppins, sans-serif',
                         fontWeight: 500,
                     }}
-                    >You are about to start a series of questions that aim to reveal your performance across 16 management dimensions. This distinctive evaluation captures your past activities, uncovering strengths and weaknesses, guiding your journey of self-discovery and growth. Your honest self-assessment is crucial. Embracing strengths and recognizing areas for improvement opens the door to a world of promise, unlocking your full potential in the competitive business arena.</Typography>
+                    >You are about to start a series of questions that aim to reveal your performance across various dimensions. This distinctive evaluation captures your past activities, uncovering strengths and weaknesses, guiding your journey of self-discovery and growth. Your honest self-assessment is crucial. Embracing strengths and recognizing areas for improvement opens the door to a world of promise, unlocking your full potential in the competitive business arena.</Typography>
                     <div style={{ height: '350px', display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
                         <img src={image6URL} alt='activityLogo' style={{ height: '80%' }} />
                     </div>

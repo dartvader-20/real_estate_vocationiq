@@ -154,6 +154,22 @@ const questionnaireData = [
 
 const questionnaireData1 = [
     {
+        question: "Which of the following is true?",
+        options: [
+            "Theoretical concepts lack real-world applications.",
+            "Practical applications require modifications to theoretical concepts.",
+            "Theoretical concepts are directly applicable without modifications.",
+        ],
+    },
+    {
+        question: "Project Experience: How do you perceive the importance of practical project experience in complementing theoretical learning?",
+        options: [
+            "Essential for better understanding concepts.",
+            "Not crucial theory suffices.",
+            "Enhances skills but doesn't significantly impact learning.",
+        ],
+    },
+    {
         question: "Understanding of Industry Practices.",
         options: [
             "Extremely familiar and updated",
@@ -281,7 +297,7 @@ const Questionaire4 = () => {
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState(Array(questionnaireData.length).fill(''));
-    const [answers1, setAnswers1] = useState(Array(questionnaireData.length).fill(''));
+    const [answers1, setAnswers1] = useState(Array(questionnaireData1.length).fill(''));
     const routePaths = [
         '/userdetails',
         '/dashboard',
@@ -300,27 +316,24 @@ const Questionaire4 = () => {
         return percentage.toFixed(2);
     };
     const handleNextPage = () => {
-        const nextQuestion = questionnaireData[currentQuestionIndex + 1];
+        const nextQuestion = questionnaireData1[currentQuestionIndex + 1];
 
         const questionKey = keyMapping[currentQuestionIndex];
         const nextQuestionKey = nextQuestion ? keyMapping[currentQuestionIndex + 1] : null;
 
-        const currentAnswer = answers[currentQuestionIndex];
-        const nextAnswer = answers[currentQuestionIndex + 1];
+        const currentAnswer = answers1[currentQuestionIndex];
+        const nextAnswer = answers1[currentQuestionIndex + 1];
 
         answersStorage1[questionKey] = currentAnswer;
-        answersStorage1[nextQuestionKey] = nextAnswer;
-        if (currentQuestionIndex + 2 < questionnaireData.length) {
+        if (nextQuestionKey !== null) {
+            answersStorage1[nextQuestionKey] = nextAnswer;
+        }
+        if (currentQuestionIndex + 2 < questionnaireData1.length) {
             setCurrentQuestionIndex((prevIndex) => prevIndex + 2);
         } else {
             techKnowledgeScore = calculateSectionScore(0, 2);
             academicKnowledgeScore = calculateSectionScore(3, 5);
             designKnowledgeScore = calculateSectionScore(6, 7);
-
-            console.log("Technical Knowledge Score:", techKnowledgeScore);
-            console.log("Academic Knowledge Score:", academicKnowledgeScore);
-            console.log("Design Knowledge Score:", designKnowledgeScore);
-
             navigate('/computation');
         }
     };
@@ -353,67 +366,74 @@ const Questionaire4 = () => {
 
     const renderQuestion = (question, questionIndex) => (
         <div key={questionIndex}>
-            <Typography color='black'
-                style={{
-                    fontFamily: 'Poppins, sans-serif',
-                    fontSize: isMobile ? '12px' : '20px',
-                    fontWeight: 600,
-                    marginLeft: '8px'
-                }}>
-                {question.question}
-            </Typography>
-            <RadioGroup
-                value={answers[questionIndex]}
-                onChange={(event) => handleRadioChange(event, questionIndex)}
-            >
-                {question.options.map((option, index) => (
-                    <FormControlLabel
-                        key={index}
-                        value={option}
-                        control={<Radio />}
-                        label={<Typography
-                            style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
-                        >
-                            {option}
-                        </Typography>}
-                    />
-                ))}
-            </RadioGroup>
+            {question && (
+                <>
+                    <Typography color='black'
+                        style={{
+                            fontFamily: 'Poppins, sans-serif',
+                            fontSize: isMobile ? '12px' : '20px',
+                            fontWeight: 600,
+                            marginLeft: '8px'
+                        }}>
+                        {question.question}
+                    </Typography>
+                    <RadioGroup
+                        value={answers[questionIndex]}
+                        onChange={(event) => handleRadioChange(event, questionIndex)}
+                    >
+                        {question.options.map((option, index) => (
+                            <FormControlLabel
+                                key={index}
+                                value={option}
+                                control={<Radio />}
+                                label={<Typography
+                                    style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
+                                >
+                                    {option}
+                                </Typography>}
+                            />
+                        ))}
+                    </RadioGroup>
+                </>
+            )}
         </div>
     );
 
     const renderQuestion1 = (question, questionIndex) => (
         <div key={questionIndex}>
-            <Typography color='black'
-                style={{
-                    fontFamily: 'Poppins, sans-serif',
-                    fontSize: isMobile ? '12px' : '20px',
-                    fontWeight: 600,
-                    marginLeft: '8px'
-                }}>
-                {question.question}
-            </Typography>
-            <RadioGroup
-                value={answers1[questionIndex]}
-                onChange={(event) => handleRadioChange1(event, questionIndex)}
-            >
-                {question.options.map((option, index) => (
-                    <FormControlLabel
-                        key={index}
-                        value={option}
-                        control={<Radio />}
-                        label={<Typography
-                            style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
-                        >
-                            {option}
-                        </Typography>}
-                    />
-                ))}
-            </RadioGroup>
+            {question && (
+                <>
+                    <Typography color='black'
+                        style={{
+                            fontFamily: 'Poppins, sans-serif',
+                            fontSize: isMobile ? '12px' : '20px',
+                            fontWeight: 600,
+                            marginLeft: '8px'
+                        }}>
+                        {question.question}
+                    </Typography>
+                    <RadioGroup
+                        value={answers1[questionIndex]}
+                        onChange={(event) => handleRadioChange1(event, questionIndex)}
+                    >
+                        {question.options.map((option, index) => (
+                            <FormControlLabel
+                                key={index}
+                                value={option}
+                                control={<Radio />}
+                                label={<Typography
+                                    style={{ fontSize: isMobile ? '12px' : 'inherit', fontFamily: 'Poppins, sans-serif', }}
+                                >
+                                    {option}
+                                </Typography>}
+                            />
+                        ))}
+                    </RadioGroup>
+                </>
+            )}
         </div>
     );
-
-
+    console.log("fk nf", answersStorage1)
     return (
         <MainContainer>
             {isMobile && (
@@ -448,12 +468,12 @@ const Questionaire4 = () => {
                 </div>
                 <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', width: '92%', flexDirection: 'column' }}>
                     <Box sx={{ border: '2px solid black', borderRadius: '16px', padding: 5 }}>
-                        {renderQuestion(questionnaireData[currentQuestionIndex], currentQuestionIndex)}
-                        {currentQuestionIndex + 1 < questionnaireData.length &&
-                            renderQuestion(questionnaireData[currentQuestionIndex + 1], currentQuestionIndex + 1)}
-                        {renderQuestion1(questionnaireData1[currentQuestionIndex], currentQuestionIndex)}
-                        {currentQuestionIndex + 1 < questionnaireData.length &&
-                            renderQuestion1(questionnaireData1[currentQuestionIndex + 1], currentQuestionIndex + 1)}
+                        {[currentQuestionIndex, currentQuestionIndex + 1].map((index) => (
+                            <React.Fragment key={index}>
+                                {renderQuestion(questionnaireData[index], index)}
+                                {renderQuestion1(questionnaireData1[index], index)}
+                            </React.Fragment>
+                        ))}
                     </Box>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', width: '90%', marginTop: 15 }}>
