@@ -48,30 +48,13 @@ const GenerateButton = styled('button')({
 const DetailsDashboard = ({ name, data }) => {
     const isMobile = window.innerWidth <= 768;
     const [dialogOpen, setDialogOpen] = React.useState(false);
-    const [selectedItemYo, setSelectedItemYo] = React.useState(null);
     const navigate = useNavigate();
     const handleDialogOpen = (yo) => {
-        setSelectedItemYo(yo);
         setDialogOpen(true);
     };
 
     const handleDialogClose = () => {
-        setSelectedItemYo(null);
         setDialogOpen(false);
-    };
-
-    const calculateQuartiles = (questionsArray) => {
-        const sortedQuestions = [...questionsArray].sort((a, b) => b.score - a.score);
-        const quartileSize = Math.floor(sortedQuestions.length / 4);
-
-        const quartiles = {
-            "Strength": sortedQuestions.slice(0, quartileSize),
-            "Opportunities": sortedQuestions.slice(quartileSize, quartileSize * 2),
-            "Work in Progress": sortedQuestions.slice(quartileSize * 2, quartileSize * 3),
-            "Ignored": sortedQuestions.slice(quartileSize * 3),
-        };
-
-        return quartiles;
     };
 
     const renderTable = () => {
